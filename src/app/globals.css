@@ -1,15 +1,38 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* OSS Brand Colors - Base: RGB(246, 75, 127) */
+  --brand-rgb: 246, 75, 127;
+  --brand-50: #fef1f5;
+  --brand-100: #fee5ed;
+  --brand-200: #fdd0dc;
+  --brand-300: #fba8bd;
+  --brand-400: #f87499;
+  --brand-500: #f64b7f;
+  --brand-600: #e63468;
+  --brand-700: #c42554;
+  --brand-800: #a3204a;
+  --brand-900: #891f43;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* Brand Color Palette */
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +45,22 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes flash {
+  0% {
+    background-color: rgba(var(--brand-rgb), 0.2);
+    box-shadow: 32px 0 rgba(var(--brand-rgb), 0.2),
+      -32px 0 rgba(var(--brand-rgb), 1);
+  }
+  50% {
+    background-color: rgba(var(--brand-rgb), 1);
+    box-shadow: 32px 0 rgba(var(--brand-rgb), 0.2),
+      -32px 0 rgba(var(--brand-rgb), 0.2);
+  }
+  100% {
+    background-color: rgba(var(--brand-rgb), 0.2);
+    box-shadow: 32px 0 rgba(var(--brand-rgb), 1),
+      -32px 0 rgba(var(--brand-rgb), 0.2);
+  }
 }
