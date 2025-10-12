@@ -1,50 +1,97 @@
 import supabase from '@/libs/supabaseClient';
+import { createLog } from './logService';
 
 export interface Stamp {
   id: string;
   customer_id: string;
+  count: number;
   created_at: string;
-  // 다른 필드들 추가
 }
 
 /**
- * 스탬프 추가
+ * 스탬프 추가 (count 증가)
  */
-export const addStamp = async (customerId: string) => {
-  const { data, error } = await supabase
+export const addStamp = async (customerId: string, amount: number = 1) => {
+  // 먼저 해당 customer의 stamp 레코드가 있는지 확인
+  const { data: existing } = await supabase
     .from('stamps')
-    .insert({ customer_id: customerId })
-    .select()
+    .select('*')
+    .eq('customer_id', customerId)
     .single();
 
-  if (error) throw error;
+  let result;
 
-  return data;
+  if (existing) {
+    // 기존 레코드가 있으면 count 증가
+    const { data, error } = await supabase
+      .from('stamps')
+      .update({ count: existing.count + amount })
+      .eq('customer_id', customerId)
+      .select()
+      .single();
+
+    if (error) throw error;
+    result = data;
+  } else {
+    // 없으면 새로 생성
+    const { data, error } = await supabase
+      .from('stamps')
+      .insert({ customer_id: customerId, count: amount })
+      .select()
+      .single();
+
+    if (error) throw error;
+    result = data;
+  }
+
+  // 로그 추가
+  await createLog(customerId, `add-${amount}`);
+
+  return result;
 };
 
 /**
- * 스탬프 삭제 (최근 스탬프 하나)
+ * 스탬프 제거 (count 감소)
  */
-export const removeStamp = async (customerId: string) => {
-  // 해당 고객의 가장 최근 스탬프 하나 찾아서 삭제
-  const { data: stamps, error: findError } = await supabase
+export const removeStamp = async (customerId: string, amount: number = 1) => {
+  // 먼저 해당 customer의 stamp 레코드 확인
+  const { data: existing, error: findError } = await supabase
     .from('stamps')
-    .select('id')
+    .select('*')
     .eq('customer_id', customerId)
-    .order('created_at', { ascending: false })
-    .limit(1);
+    .single();
 
   if (findError) throw findError;
-  if (!stamps || stamps.length === 0) {
-    throw new Error('삭제할 스탬프가 없습니다');
+  if (!existing) {
+    throw new Error('스탬프가 없습니다');
   }
 
-  const { error: deleteError } = await supabase
-    .from('stamps')
-    .delete()
-    .eq('id', stamps[0].id);
+  const newCount = existing.count - amount;
 
-  if (deleteError) throw deleteError;
+  if (newCount < 0) {
+    throw new Error('제거할 스탬프가 부족합니다');
+  }
+
+  if (newCount === 0) {
+    // count가 0이 되면 레코드 삭제
+    const { error: deleteError } = await supabase
+      .from('stamps')
+      .delete()
+      .eq('customer_id', customerId);
+
+    if (deleteError) throw deleteError;
+  } else {
+    // count 감소
+    const { error } = await supabase
+      .from('stamps')
+      .update({ count: newCount })
+      .eq('customer_id', customerId);
+
+    if (error) throw error;
+  }
+
+  // 로그 추가
+  await createLog(customerId, `remove-${amount}`);
 };
 
 /**

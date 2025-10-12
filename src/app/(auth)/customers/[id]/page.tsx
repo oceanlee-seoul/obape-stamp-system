@@ -2,14 +2,27 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useCustomer } from '@/hooks/useCustomer';
+import { useLogs } from '@/hooks/useLogs';
 import CustomerInfo from './_components/CustomerInfo';
 import StampSection from './_components/StampSection';
+import LogList from './_components/LogList';
 
 export default function CustomerDetailPage() {
   const params = useParams();
   const router = useRouter();
   const customerId = params.id as string;
-  const { customer, isLoading, error } = useCustomer(customerId);
+  const { customer, isLoading, error, refresh } = useCustomer(customerId);
+  const {
+    logs,
+    isLoading: logsLoading,
+    error: logsError,
+    refresh: refreshLogs,
+  } = useLogs(customerId);
+
+  const handleUpdate = () => {
+    refresh();
+    refreshLogs();
+  };
 
   if (isLoading) {
     return (
@@ -55,9 +68,18 @@ export default function CustomerDetailPage() {
       </div>
 
       {/* 메인 컨텐츠 */}
-      <div className="flex gap-6">
+      <div className="flex gap-6 mb-6">
         <CustomerInfo customer={customer} />
-        <StampSection stampCount={stampCount} />
+        <StampSection
+          stampCount={stampCount}
+          customerId={customerId}
+          onUpdate={handleUpdate}
+        />
+      </div>
+
+      {/* 로그 섹션 */}
+      <div>
+        <LogList logs={logs} isLoading={logsLoading} error={logsError} />
       </div>
     </div>
   );

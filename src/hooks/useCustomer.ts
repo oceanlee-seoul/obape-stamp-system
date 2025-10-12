@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getCustomerById } from '@/services/customerService';
 
 interface CustomerDetail {
@@ -14,30 +14,31 @@ export const useCustomer = (id: string) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const fetchCustomer = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError('');
+
+      const data = await getCustomerById(id);
+      setCustomer(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      setCustomer(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id]);
+
   useEffect(() => {
-    const fetchCustomer = async () => {
-      try {
-        setIsLoading(true);
-        setError('');
-
-        const data = await getCustomerById(id);
-        setCustomer(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        setCustomer(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     if (id) {
       fetchCustomer();
     }
-  }, [id]);
+  }, [id, fetchCustomer]);
 
   return {
     customer,
     isLoading,
     error,
+    refresh: fetchCustomer,
   };
 };

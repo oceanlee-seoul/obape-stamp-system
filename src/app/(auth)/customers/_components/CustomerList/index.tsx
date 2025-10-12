@@ -1,16 +1,79 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Customer } from '@/services/customerService';
+import { addStamp, removeStamp } from '@/services/stampService';
 
 interface CustomerListProps {
   customers: Customer[];
   isLoading: boolean;
   error: string;
+  onUpdate: () => void;
 }
 
-const CustomerList = ({ customers, isLoading, error }: CustomerListProps) => {
+const CustomerList = ({
+  customers,
+  isLoading,
+  error,
+  onUpdate,
+}: CustomerListProps) => {
   const router = useRouter();
+  const [loadingCustomerId, setLoadingCustomerId] = useState<string | null>(
+    null
+  );
+  const [amounts, setAmounts] = useState<Record<string, number>>({});
+
+  const handleAdd = async (customerId: string) => {
+    const amount = amounts[customerId] || 1;
+    try {
+      setLoadingCustomerId(customerId);
+      await addStamp(customerId, amount);
+      onUpdate();
+      setAmounts({ ...amounts, [customerId]: 1 });
+    } catch (error) {
+      console.error('스탬프 추가 실패:', error);
+      alert('스탬프 추가에 실패했습니다.');
+    } finally {
+      setLoadingCustomerId(null);
+    }
+  };
+
+  const handleRemove = async (customerId: string) => {
+    const amount = amounts[customerId] || 1;
+    try {
+      setLoadingCustomerId(customerId);
+      await removeStamp(customerId, amount);
+      onUpdate();
+      setAmounts({ ...amounts, [customerId]: 1 });
+    } catch (error) {
+      console.error('스탬프 제거 실패:', error);
+      alert(
+        error instanceof Error ? error.message : '스탬프 제거에 실패했습니다.'
+      );
+    } finally {
+      setLoadingCustomerId(null);
+    }
+  };
+
+  const handleUse10 = async (customerId: string, stampCount: number) => {
+    if (stampCount < 10) {
+      alert('스탬프가 10개 미만입니다.');
+      return;
+    }
+
+    try {
+      setLoadingCustomerId(customerId);
+      await removeStamp(customerId, 10);
+      onUpdate();
+      alert('10개 사용처리 완료!');
+    } catch (error) {
+      console.error('사용처리 실패:', error);
+      alert('사용처리에 실패했습니다.');
+    } finally {
+      setLoadingCustomerId(null);
+    }
+  };
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-20">
@@ -63,6 +126,9 @@ const CustomerList = ({ customers, isLoading, error }: CustomerListProps) => {
             ) : (
               customers.map((customer, index) => {
                 const stampCount = customer.stamps?.[0]?.count || 0;
+                const isThisLoading = loadingCustomerId === customer.id;
+                const amount = amounts[customer.id] || 1;
+
                 return (
                   <tr
                     key={customer.id}
@@ -83,20 +149,49 @@ const CustomerList = ({ customers, isLoading, error }: CustomerListProps) => {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center justify-center gap-2">
+                      <div className="flex items-center justify-center gap-1.5">
+                        <input
+                          type="number"
+                          min="1"
+                          value={amount}
+                          onChange={(e) =>
+                            setAmounts({
+                              ...amounts,
+                              [customer.id]: Number(e.target.value),
+                            })
+                          }
+                          disabled={isThisLoading}
+                          className="w-16 px-2 py-1 text-xs border border-pink-200 rounded focus:outline-none focus:ring-1 focus:ring-pink-300 disabled:bg-gray-100"
+                        />
+                        <button
+                          onClick={() => handleAdd(customer.id)}
+                          disabled={isThisLoading}
+                          className="px-2 py-1 text-xs font-medium text-white bg-gradient-to-r from-pink-500 to-rose-500 rounded hover:from-pink-600 hover:to-rose-600 transition-all shadow-sm disabled:opacity-50"
+                        >
+                          추가
+                        </button>
+                        <button
+                          onClick={() => handleRemove(customer.id)}
+                          disabled={isThisLoading}
+                          className="px-2 py-1 text-xs font-medium text-rose-700 bg-rose-50 border border-rose-200 rounded hover:bg-rose-100 transition-all disabled:opacity-50"
+                        >
+                          제거
+                        </button>
+                        <button
+                          onClick={() => handleUse10(customer.id, stampCount)}
+                          disabled={isThisLoading || stampCount < 10}
+                          className="px-2 py-1 text-xs font-medium text-pink-700 bg-white border border-pink-300 rounded hover:bg-pink-50 transition-all disabled:opacity-50"
+                        >
+                          10개
+                        </button>
                         <button
                           onClick={() =>
                             router.push(`/customers/${customer.id}`)
                           }
-                          className="px-3 py-1.5 text-xs font-medium text-pink-700 bg-pink-50 border border-pink-200 rounded-lg hover:bg-pink-100 hover:border-pink-300 transition-all"
+                          disabled={isThisLoading}
+                          className="px-2 py-1 text-xs font-medium text-pink-700 bg-pink-50 border border-pink-200 rounded hover:bg-pink-100 hover:border-pink-300 transition-all disabled:opacity-50"
                         >
-                          상세보기
-                        </button>
-                        <button className="px-3 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all shadow-sm">
-                          스탬프 +
-                        </button>
-                        <button className="px-3 py-1.5 text-xs font-medium text-rose-700 bg-rose-50 border border-rose-200 rounded-lg hover:bg-rose-100 hover:border-rose-300 transition-all">
-                          스탬프 -
+                          상세
                         </button>
                       </div>
                     </td>
