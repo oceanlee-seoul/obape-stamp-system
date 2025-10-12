@@ -1,3 +1,6 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
 import { Customer } from '@/services/customerService';
 
 interface CustomerListProps {
@@ -7,6 +10,7 @@ interface CustomerListProps {
 }
 
 const CustomerList = ({ customers, isLoading, error }: CustomerListProps) => {
+  const router = useRouter();
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-20">
@@ -80,7 +84,12 @@ const CustomerList = ({ customers, isLoading, error }: CustomerListProps) => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-center gap-2">
-                        <button className="px-3 py-1.5 text-xs font-medium text-pink-700 bg-pink-50 border border-pink-200 rounded-lg hover:bg-pink-100 hover:border-pink-300 transition-all">
+                        <button
+                          onClick={() =>
+                            router.push(`/customers/${customer.id}`)
+                          }
+                          className="px-3 py-1.5 text-xs font-medium text-pink-700 bg-pink-50 border border-pink-200 rounded-lg hover:bg-pink-100 hover:border-pink-300 transition-all"
+                        >
                           상세보기
                         </button>
                         <button className="px-3 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all shadow-sm">

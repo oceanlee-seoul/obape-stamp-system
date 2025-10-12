@@ -54,7 +54,7 @@ export const getCustomerById = async (id: string) => {
     .select(
       `
       *,
-      stamps(*)
+      stamps(count)
     `
     )
     .eq('id', id)
