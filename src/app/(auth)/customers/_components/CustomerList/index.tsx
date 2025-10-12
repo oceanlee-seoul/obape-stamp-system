@@ -77,7 +77,7 @@ const CustomerList = ({
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <p className="text-pink-400">로딩 중...</p>
+        <p className="text-brand-400">로딩 중...</p>
       </div>
     );
   }
@@ -92,28 +92,28 @@ const CustomerList = ({
 
   return (
     <div className="mt-6">
-      <div className="bg-white rounded-lg shadow-sm border border-pink-100 overflow-hidden">
-        <table className="min-w-full divide-y divide-pink-100">
-          <thead className="bg-gradient-to-r from-pink-50 to-rose-50">
+      <div className="bg-white rounded-lg shadow-sm border border-brand-100 overflow-hidden">
+        <table className="min-w-full divide-y divide-brand-100">
+          <thead className="bg-gradient-to-r from-brand-50 to-brand-100">
             <tr>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-pink-700">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-brand-700">
                 No
               </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-pink-700">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-brand-700">
                 이름
               </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-pink-700">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-brand-700">
                 전화번호
               </th>
-              <th className="px-6 py-4 text-center text-sm font-semibold text-pink-700">
+              <th className="px-6 py-4 text-center text-sm font-semibold text-brand-700">
                 스탬프
               </th>
-              <th className="px-6 py-4 text-center text-sm font-semibold text-pink-700">
+              <th className="px-6 py-4 text-center text-sm font-semibold text-brand-700">
                 작업
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-pink-50">
+          <tbody className="bg-white divide-y divide-brand-50">
             {customers.length === 0 ? (
               <tr>
                 <td
@@ -132,7 +132,7 @@ const CustomerList = ({
                 return (
                   <tr
                     key={customer.id}
-                    className="hover:bg-pink-50/50 transition-colors"
+                    className="hover:bg-brand-50/50 transition-colors"
                   >
                     <td className="px-6 py-4 text-sm text-gray-700">
                       {index + 1}
@@ -144,7 +144,7 @@ const CustomerList = ({
                       {customer.phone}
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-semibold bg-pink-100 text-pink-700">
+                      <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-semibold bg-brand-100 text-brand-700">
                         {stampCount}
                       </span>
                     </td>
@@ -161,12 +161,12 @@ const CustomerList = ({
                             })
                           }
                           disabled={isThisLoading}
-                          className="w-16 px-2 py-1 text-xs border border-pink-200 rounded focus:outline-none focus:ring-1 focus:ring-pink-300 disabled:bg-gray-100"
+                          className="w-16 px-2 py-1 text-xs border border-brand-200 rounded focus:outline-none focus:ring-1 focus:ring-brand-300 disabled:bg-gray-100"
                         />
                         <button
                           onClick={() => handleAdd(customer.id)}
                           disabled={isThisLoading}
-                          className="px-2 py-1 text-xs font-medium text-white bg-gradient-to-r from-pink-500 to-rose-500 rounded hover:from-pink-600 hover:to-rose-600 transition-all shadow-sm disabled:opacity-50"
+                          className="px-2 py-1 text-xs font-medium text-white bg-gradient-to-r from-brand-500 to-brand-600 rounded hover:from-brand-600 hover:to-brand-700 transition-all shadow-sm disabled:opacity-50"
                         >
                           추가
                         </button>
@@ -180,7 +180,7 @@ const CustomerList = ({
                         <button
                           onClick={() => handleUse10(customer.id, stampCount)}
                           disabled={isThisLoading || stampCount < 10}
-                          className="px-2 py-1 text-xs font-medium text-pink-700 bg-white border border-pink-300 rounded hover:bg-pink-50 transition-all disabled:opacity-50"
+                          className="px-2 py-1 text-xs font-medium text-brand-700 bg-white border border-brand-300 rounded hover:bg-brand-50 transition-all disabled:opacity-50"
                         >
                           10개
                         </button>
@@ -189,7 +189,7 @@ const CustomerList = ({
                             router.push(`/customers/${customer.id}`)
                           }
                           disabled={isThisLoading}
-                          className="px-2 py-1 text-xs font-medium text-pink-700 bg-pink-50 border border-pink-200 rounded hover:bg-pink-100 hover:border-pink-300 transition-all disabled:opacity-50"
+                          className="px-2 py-1 text-xs font-medium text-brand-700 bg-brand-50 border border-brand-200 rounded hover:bg-brand-100 hover:border-brand-300 transition-all disabled:opacity-50"
                         >
                           상세
                         </button>
@@ -205,7 +205,7 @@ const CustomerList = ({
 
       <div className="mt-4 text-sm text-gray-600">
         총{' '}
-        <span className="font-semibold text-pink-600">{customers.length}</span>
+        <span className="font-semibold text-brand-600">{customers.length}</span>
         명
       </div>
     </div>

@@ -8,8 +8,8 @@ interface CustomerInfoProps {
 
 const CustomerInfo = ({ customer }: CustomerInfoProps) => {
   return (
-    <section className="flex-1 bg-white rounded-lg shadow-sm border border-pink-100 p-6">
-      <h2 className="text-xl font-semibold text-pink-700 mb-6 pb-3 border-b border-pink-100">
+    <section className="flex-1 bg-white rounded-lg shadow-sm border border-brand-100 p-6">
+      <h2 className="text-xl font-semibold text-brand-700 mb-6 pb-3 border-b border-brand-100">
         고객 정보
       </h2>
 

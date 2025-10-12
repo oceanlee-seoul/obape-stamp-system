@@ -18,12 +18,12 @@ const StampCards = ({ count }: StampCardsProps) => {
           {/* 상태 표시 */}
           <div className="text-center mb-4 flex items-center justify-center gap-3">
             {currentStamps > 0 && (
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-rose-100 text-rose-700">
+              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-brand-100 text-brand-700">
                 진행 중: {currentStamps}/10
               </span>
             )}
             {completedCards > 0 && (
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-pink-200 text-pink-800">
+              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-brand-200 text-brand-800">
                 완성: {completedCards}장
               </span>
             )}
@@ -39,7 +39,7 @@ const StampCards = ({ count }: StampCardsProps) => {
               [...Array(completedCards)].map((_, index) => (
                 <div
                   key={`completed-${index}`}
-                  className="absolute w-80 bg-white rounded-xl border-2 border-pink-200 shadow-lg p-6"
+                  className="absolute w-80 bg-white rounded-xl border-2 border-brand-200 shadow-lg p-6"
                   style={{
                     transform: `translate(${8 * (index + 1)}px, ${
                       -8 * (index + 1)
@@ -57,7 +57,7 @@ const StampCards = ({ count }: StampCardsProps) => {
 
             {/* 진행 중인 카드 (맨 앞) - 항상 표시 */}
             <div
-              className="relative w-80 bg-white rounded-xl border-2 border-pink-200 p-6 shadow-xl"
+              className="relative w-80 bg-white rounded-xl border-2 border-brand-200 p-6 shadow-xl"
               style={{ zIndex: 10 }}
             >
               <div className="grid grid-cols-5 gap-3">
@@ -69,7 +69,7 @@ const StampCards = ({ count }: StampCardsProps) => {
                       transition-all duration-300
                       ${
                         slot < currentStamps
-                          ? 'bg-gradient-to-br from-pink-400 to-rose-400 border-pink-500 shadow-md'
+                          ? 'bg-gradient-to-br from-brand-400 to-brand-500 border-brand-500 shadow-md'
                           : 'bg-gray-50 border-gray-200 border-dashed'
                       }
                     `}
@@ -97,10 +97,10 @@ const StampCards = ({ count }: StampCardsProps) => {
       )}
 
       {/* 총 스탬프 개수 표시 */}
-      <div className="text-center pt-4 border-t border-pink-200">
+      <div className="text-center pt-4 border-t border-brand-200">
         <p className="text-sm text-gray-600">
           총 스탬프:{' '}
-          <span className="font-bold text-pink-600 text-lg">{count}</span>개
+          <span className="font-bold text-brand-600 text-lg">{count}</span>개
         </p>
       </div>
     </div>

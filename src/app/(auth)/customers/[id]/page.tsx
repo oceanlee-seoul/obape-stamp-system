@@ -27,7 +27,7 @@ export default function CustomerDetailPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <p className="text-pink-400">로딩 중...</p>
+        <p className="text-brand-400">로딩 중...</p>
       </div>
     );
   }
@@ -41,7 +41,7 @@ export default function CustomerDetailPage() {
           </p>
           <button
             onClick={() => router.push('/customers')}
-            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+            className="px-4 py-2 bg-brand-500 text-white rounded-lg hover:bg-brand-600"
           >
             목록으로 돌아가기
           </button>
@@ -56,12 +56,12 @@ export default function CustomerDetailPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
       {/* 헤더 */}
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-brand-600 to-brand-700 bg-clip-text text-transparent">
           고객 상세
         </h1>
         <button
           onClick={() => router.push('/customers')}
-          className="px-4 py-2 text-sm font-medium text-pink-700 bg-pink-50 border border-pink-200 rounded-lg hover:bg-pink-100 hover:border-pink-300 transition-all"
+          className="px-4 py-2 text-sm font-medium text-brand-700 bg-brand-50 border border-brand-200 rounded-lg hover:bg-brand-100 hover:border-brand-300 transition-all"
         >
           ← 목록으로
         </button>

@@ -21,12 +21,12 @@ const SearchBox = ({ onSearch }: SearchBoxProps) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-pink-100 p-6">
+    <div className="bg-white rounded-lg shadow-sm border border-brand-100 p-6">
       <div className="flex gap-3 items-center">
         <select
           value={target}
           onChange={(e) => setTarget(e.target.value)}
-          className="px-4 py-2 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+          className="px-4 py-2 border border-brand-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-transparent"
         >
           <option value="all">전체</option>
           <option value="name">이름</option>
@@ -39,12 +39,12 @@ const SearchBox = ({ onSearch }: SearchBoxProps) => {
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           onKeyPress={handleKeyPress}
-          className="flex-1 px-4 py-2 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+          className="flex-1 px-4 py-2 border border-brand-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-transparent"
         />
 
         <button
           onClick={handleSearch}
-          className="px-6 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-medium rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all shadow-sm"
+          className="px-6 py-2 bg-gradient-to-r from-brand-500 to-brand-600 text-white font-medium rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all shadow-sm"
         >
           검색
         </button>

@@ -48,24 +48,24 @@ export default function LoginPage() {
   // 세션 체크 중일 때 로딩 표시
   if (isChecking) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-pink-50 to-rose-50">
-        <p className="text-pink-400">로딩 중...</p>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-brand-50 to-brand-100">
+        <p className="text-brand-400">로딩 중...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-pink-50 to-rose-50">
-      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl border border-pink-100">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-brand-50 to-brand-100">
+      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl border border-brand-100">
         {/* 로고 */}
         <div className="flex justify-center mb-8">
-          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-lg">
+          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center shadow-lg">
             <span className="text-white font-bold text-2xl">OSS</span>
           </div>
         </div>
 
         {/* 제목 */}
-        <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-brand-600 to-brand-700 bg-clip-text text-transparent">
           로그인
         </h1>
 
@@ -80,7 +80,7 @@ export default function LoginPage() {
               placeholder="example@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 border border-brand-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-transparent transition-all"
             />
           </div>
 
@@ -94,13 +94,13 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-              className="w-full px-4 py-3 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 border border-brand-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-transparent transition-all"
             />
           </div>
 
           <button
             onClick={handleLogin}
-            className="w-full px-4 py-3 text-white font-semibold bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all shadow-md hover:shadow-lg mt-6"
+            className="w-full px-4 py-3 text-white font-semibold bg-gradient-to-r from-brand-500 to-brand-600 rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all shadow-md hover:shadow-lg mt-6"
           >
             로그인
           </button>

@@ -21,8 +21,8 @@ const Nav = () => {
             href={link.href}
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               isActive
-                ? 'bg-white text-pink-600 shadow-sm'
-                : 'text-pink-700 hover:bg-white/50'
+                ? 'bg-white text-brand-600 shadow-sm'
+                : 'text-brand-700 hover:bg-white/50'
             }`}
           >
             {link.label}

@@ -12,7 +12,7 @@ const LogList = ({ logs, isLoading, error }: LogListProps) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-10">
-        <p className="text-pink-400">로딩 중...</p>
+        <p className="text-brand-400">로딩 중...</p>
       </div>
     );
   }
@@ -28,7 +28,7 @@ const LogList = ({ logs, isLoading, error }: LogListProps) => {
   const getActionText = (action: string) => {
     if (action.startsWith('add-')) {
       const amount = action.replace('add-', '');
-      return { text: `${amount}개 추가`, color: 'text-pink-600 bg-pink-50' };
+      return { text: `${amount}개 추가`, color: 'text-brand-600 bg-brand-50' };
     } else if (action.startsWith('remove-')) {
       const amount = action.replace('remove-', '');
       return { text: `${amount}개 제거`, color: 'text-rose-600 bg-rose-50' };
@@ -37,8 +37,8 @@ const LogList = ({ logs, isLoading, error }: LogListProps) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-pink-100 p-6">
-      <h2 className="text-xl font-semibold text-pink-700 mb-4 pb-3 border-b border-pink-100">
+    <div className="bg-white rounded-lg shadow-sm border border-brand-100 p-6">
+      <h2 className="text-xl font-semibold text-brand-700 mb-4 pb-3 border-b border-brand-100">
         작업 이력
       </h2>
 
@@ -53,7 +53,7 @@ const LogList = ({ logs, isLoading, error }: LogListProps) => {
             return (
               <div
                 key={log.id}
-                className="flex items-center justify-between p-4 rounded-lg border border-pink-50 hover:bg-pink-50/30 transition-colors"
+                className="flex items-center justify-between p-4 rounded-lg border border-brand-50 hover:bg-brand-50/30 transition-colors"
               >
                 <div className="flex items-center gap-4 flex-1">
                   <span
