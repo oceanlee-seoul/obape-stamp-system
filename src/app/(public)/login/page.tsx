@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import supabase from '@/libs/supabaseClient';
 import { useRouter } from 'next/navigation';
 import Loading from '@/_components/Loading';
@@ -60,15 +61,25 @@ export default function LoginPage() {
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl border border-brand-100">
         {/* 로고 */}
         <div className="flex justify-center mb-8">
-          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-2xl">OSS</span>
+          <div className="w-48 h-48">
+            <Image
+              src="/logo.PNG"
+              alt="OSS Logo"
+              width={192}
+              height={192}
+              className="object-contain"
+            />
           </div>
         </div>
 
         {/* 제목 */}
-        <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-brand-600 to-brand-700 bg-clip-text text-transparent">
-          로그인
-        </h1>
+        <div className="text-center mb-8">
+          <h1 className="text-sm font-semibold text-brand-600 tracking-wider mb-2">
+            OBAPE STAMP SYSTEM
+          </h1>
+          <div className="h-px bg-gradient-to-r from-transparent via-brand-200 to-transparent mb-6" />
+          <h2 className="text-2xl font-bold text-gray-800">로그인</h2>
+        </div>
 
         {/* 폼 */}
         <div className="space-y-4">
