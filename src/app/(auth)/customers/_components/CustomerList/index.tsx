@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { Customer } from '@/services/customerService';
 import { addStamp, removeStamp } from '@/services/stampService';
 import Loading from '@/components/Loading';
@@ -31,10 +32,11 @@ const CustomerList = ({
       setLoadingCustomerId(customerId);
       await addStamp(customerId, amount);
       onUpdate();
+      toast.success(`스탬프 ${amount}개 추가 완료!`);
       setAmounts({ ...amounts, [customerId]: 1 });
     } catch (error) {
       console.error('스탬프 추가 실패:', error);
-      alert('스탬프 추가에 실패했습니다.');
+      toast.error('스탬프 추가에 실패했습니다.');
     } finally {
       setLoadingCustomerId(null);
     }
@@ -46,10 +48,11 @@ const CustomerList = ({
       setLoadingCustomerId(customerId);
       await removeStamp(customerId, amount);
       onUpdate();
+      toast.success(`스탬프 ${amount}개 제거 완료!`);
       setAmounts({ ...amounts, [customerId]: 1 });
     } catch (error) {
       console.error('스탬프 제거 실패:', error);
-      alert(
+      toast.error(
         error instanceof Error ? error.message : '스탬프 제거에 실패했습니다.'
       );
     } finally {
@@ -59,7 +62,7 @@ const CustomerList = ({
 
   const handleUse10 = async (customerId: string, stampCount: number) => {
     if (stampCount < 10) {
-      alert('스탬프가 10개 미만입니다.');
+      toast.error('스탬프가 10개 미만입니다.');
       return;
     }
 
@@ -67,10 +70,10 @@ const CustomerList = ({
       setLoadingCustomerId(customerId);
       await removeStamp(customerId, 10);
       onUpdate();
-      alert('10개 사용처리 완료!');
+      toast.success('10개 사용처리 완료! 🎉');
     } catch (error) {
       console.error('사용처리 실패:', error);
-      alert('사용처리에 실패했습니다.');
+      toast.error('사용처리에 실패했습니다.');
     } finally {
       setLoadingCustomerId(null);
     }

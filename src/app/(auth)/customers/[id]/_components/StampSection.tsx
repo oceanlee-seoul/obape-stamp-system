@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import StampCards from './StampCards';
 import { addStamp, removeStamp } from '@/services/stampService';
 
@@ -25,10 +26,11 @@ const StampSection = ({
       setIsLoading(true);
       await addStamp(customerId, amount);
       onUpdate(); // 데이터 새로고침
+      toast.success(`스탬프 ${amount}개 추가 완료!`);
       setAmount(1); // 입력값 초기화
     } catch (error) {
       console.error('스탬프 추가 실패:', error);
-      alert('스탬프 추가에 실패했습니다.');
+      toast.error('스탬프 추가에 실패했습니다.');
     } finally {
       setIsLoading(false);
     }
@@ -41,10 +43,11 @@ const StampSection = ({
       setIsLoading(true);
       await removeStamp(customerId, amount);
       onUpdate(); // 데이터 새로고침
+      toast.success(`스탬프 ${amount}개 제거 완료!`);
       setAmount(1); // 입력값 초기화
     } catch (error) {
       console.error('스탬프 제거 실패:', error);
-      alert(
+      toast.error(
         error instanceof Error ? error.message : '스탬프 제거에 실패했습니다.'
       );
     } finally {
@@ -54,7 +57,7 @@ const StampSection = ({
 
   const handleUse10 = async () => {
     if (stampCount < 10) {
-      alert('스탬프가 10개 미만입니다.');
+      toast.error('스탬프가 10개 미만입니다.');
       return;
     }
 
@@ -62,10 +65,10 @@ const StampSection = ({
       setIsLoading(true);
       await removeStamp(customerId, 10);
       onUpdate();
-      alert('10개 사용처리 완료!');
+      toast.success('10개 사용처리 완료! 🎉');
     } catch (error) {
       console.error('사용처리 실패:', error);
-      alert('사용처리에 실패했습니다.');
+      toast.error('사용처리에 실패했습니다.');
     } finally {
       setIsLoading(false);
     }

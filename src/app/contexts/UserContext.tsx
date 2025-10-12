@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import supabase from '@/libs/supabaseClient';
 import Loading from '@/components/Loading';
 
@@ -107,12 +108,15 @@ export const UserProvider = ({
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error('Logout error:', error);
+        toast.error('로그아웃에 실패했습니다.');
         return;
       }
       setUser(null);
+      toast.success('로그아웃 완료!');
       router.push('/login');
     } catch (error) {
       console.error('Logout error:', error);
+      toast.error('로그아웃에 실패했습니다.');
     }
   };
 
