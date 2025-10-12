@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { Customer } from '@/services/customerService';
 import { addStamp, removeStamp } from '@/services/stampService';
-import Loading from '@/components/Loading';
+import Loading from '@/_components/Loading';
 
 interface CustomerListProps {
   customers: Customer[];

@@ -1,12 +1,12 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { useCustomer } from '@/hooks/useCustomer';
-import { useLogs } from '@/hooks/useLogs';
+import { useCustomer } from '@/_hooks/useCustomer';
+import { useLogs } from '@/_hooks/useLogs';
 import CustomerInfo from './_components/CustomerInfo';
 import StampSection from './_components/StampSection';
 import LogList from './_components/LogList';
-import Loading from '@/components/Loading';
+import Loading from '@/_components/Loading';
 
 export default function CustomerDetailPage() {
   const params = useParams();

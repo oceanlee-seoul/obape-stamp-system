@@ -1,7 +1,7 @@
 'use client';
 
 import { Log } from '@/services/logService';
-import Loading from '@/components/Loading';
+import Loading from '@/_components/Loading';
 
 interface LogListProps {
   logs: Log[];

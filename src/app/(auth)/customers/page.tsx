@@ -1,6 +1,6 @@
 'use client';
 
-import { useCustomers } from '@/hooks/useCustomers';
+import { useCustomers } from '@/_hooks/useCustomers';
 import CustomerList from './_components/CustomerList';
 import SearchBox from './_components/SearchBox';
 
