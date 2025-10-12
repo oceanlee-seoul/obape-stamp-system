@@ -1,6 +1,7 @@
 'use client';
 
 import { Log } from '@/services/logService';
+import Loading from '@/components/Loading';
 
 interface LogListProps {
   logs: Log[];
@@ -10,11 +11,7 @@ interface LogListProps {
 
 const LogList = ({ logs, isLoading, error }: LogListProps) => {
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-10">
-        <p className="text-brand-400">로딩 중...</p>
-      </div>
-    );
+    return <Loading size="md" text="작업 이력 불러오는 중..." />;
   }
 
   if (error) {

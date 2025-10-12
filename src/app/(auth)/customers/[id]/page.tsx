@@ -6,6 +6,7 @@ import { useLogs } from '@/hooks/useLogs';
 import CustomerInfo from './_components/CustomerInfo';
 import StampSection from './_components/StampSection';
 import LogList from './_components/LogList';
+import Loading from '@/components/Loading';
 
 export default function CustomerDetailPage() {
   const params = useParams();
@@ -27,7 +28,7 @@ export default function CustomerDetailPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <p className="text-brand-400">로딩 중...</p>
+        <Loading size="lg" text="고객 정보 불러오는 중..." />
       </div>
     );
   }

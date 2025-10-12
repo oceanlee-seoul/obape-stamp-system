@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Customer } from '@/services/customerService';
 import { addStamp, removeStamp } from '@/services/stampService';
+import Loading from '@/components/Loading';
 
 interface CustomerListProps {
   customers: Customer[];
@@ -75,11 +76,7 @@ const CustomerList = ({
     }
   };
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-20">
-        <p className="text-brand-400">로딩 중...</p>
-      </div>
-    );
+    return <Loading size="lg" text="고객 목록 불러오는 중..." />;
   }
 
   if (error) {

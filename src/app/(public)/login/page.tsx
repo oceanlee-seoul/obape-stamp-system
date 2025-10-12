@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import supabase from '@/libs/supabaseClient';
 import { useRouter } from 'next/navigation';
+import Loading from '@/components/Loading';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -49,7 +50,7 @@ export default function LoginPage() {
   if (isChecking) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-brand-50 to-brand-100">
-        <p className="text-brand-400">로딩 중...</p>
+        <Loading size="lg" text="세션 확인 중..." />
       </div>
     );
   }

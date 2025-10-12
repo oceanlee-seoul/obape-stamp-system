@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '@/libs/supabaseClient';
+import Loading from '@/components/Loading';
 
 interface User {
   id: string;
@@ -119,7 +120,7 @@ export const UserProvider = ({
   if (requireAuth && isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>로딩 중...</p>
+        <Loading size="lg" text="인증 확인 중..." />
       </div>
     );
   }

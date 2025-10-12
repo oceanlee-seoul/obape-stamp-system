@@ -5,6 +5,7 @@
   --foreground: #171717;
 
   /* OSS Brand Colors - Base: RGB(246, 75, 127) */
+  --brand-rgb: 246, 75, 127;
   --brand-50: #fef1f5;
   --brand-100: #fee5ed;
   --brand-200: #fdd0dc;
@@ -44,4 +45,22 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+@keyframes flash {
+  0% {
+    background-color: rgba(var(--brand-rgb), 0.2);
+    box-shadow: 32px 0 rgba(var(--brand-rgb), 0.2),
+      -32px 0 rgba(var(--brand-rgb), 1);
+  }
+  50% {
+    background-color: rgba(var(--brand-rgb), 1);
+    box-shadow: 32px 0 rgba(var(--brand-rgb), 0.2),
+      -32px 0 rgba(var(--brand-rgb), 0.2);
+  }
+  100% {
+    background-color: rgba(var(--brand-rgb), 0.2);
+    box-shadow: 32px 0 rgba(var(--brand-rgb), 1),
+      -32px 0 rgba(var(--brand-rgb), 0.2);
+  }
 }

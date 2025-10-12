@@ -1,12 +1,13 @@
 'use client';
 
 import { useUser } from '@/app/contexts/UserContext';
+import Loading from '@/components/Loading';
 
 const UserInfo = () => {
   const { user, isLoading, logout } = useUser();
 
   if (isLoading) {
-    return <div className="text-brand-400">로딩 중...</div>;
+    return <Loading size="sm" />;
   }
 
   if (!user) {
