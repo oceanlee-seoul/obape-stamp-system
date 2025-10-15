@@ -4,6 +4,8 @@ export interface Customer {
   id: string;
   name: string;
   phone: string;
+  gender?: 'male' | 'female';
+  note?: string | null;
   created_at: string;
   stamps: { count: number }[];
 }
@@ -71,6 +73,8 @@ export const getCustomerById = async (id: string) => {
 export const createCustomer = async (customer: {
   name: string;
   phone: string;
+  gender: 'male' | 'female';
+  note?: string;
 }) => {
   const { data, error } = await supabase
     .from('customers')
