@@ -6,10 +6,6 @@ import toast from 'react-hot-toast';
 import { Customer } from '@/services/customerService';
 import { addStamp, removeStamp } from '@/services/stampService';
 import Loading from '@/_components/Loading';
-import { useModal } from '@/app/contexts/ModalContext';
-import CustomerCreateModal from '../CustomerCreateModal';
-import { createCustomer } from '@/services/customerService';
-import StampConfirmModal from '../StampConfirmModal';
 
 interface CustomerListProps {
   customers: Customer[];
@@ -25,7 +21,6 @@ const CustomerList = ({
   onUpdate,
 }: CustomerListProps) => {
   const router = useRouter();
-  const { open, close } = useModal();
   const [loadingCustomerId, setLoadingCustomerId] = useState<string | null>(
     null
   );
@@ -97,52 +92,6 @@ const CustomerList = ({
 
   return (
     <div className="mt-6">
-      <div className="flex justify-between items-center mb-3">
-        <div className="mt-4 text-sm text-gray-600">
-          총{' '}
-          <span className="font-semibold text-brand-600">
-            {customers.length}
-          </span>
-          명
-        </div>
-        <div className="flex justify-end">
-          <button
-            className="px-3 py-2 text-sm font-medium text-white bg-brand-500 rounded hover:bg-brand-600 transition-colors"
-            onClick={() =>
-              open({
-                content: (
-                  <CustomerCreateModal
-                    onCancel={close}
-                    onSubmit={async (values) => {
-                      try {
-                        await createCustomer({
-                          name: values.name,
-                          phone: values.phone,
-                          gender: values.gender,
-                          note: values.note,
-                        });
-                        toast.success('고객이 추가되었습니다.');
-                        close();
-                        onUpdate();
-                      } catch (err) {
-                        console.error('고객 추가 실패:', err);
-                        toast.error(
-                          err instanceof Error
-                            ? err.message
-                            : '고객 추가에 실패했습니다.'
-                        );
-                      }
-                    }}
-                  />
-                ),
-                options: { dismissOnBackdrop: false, dismissOnEsc: true },
-              })
-            }
-          >
-            고객 추가
-          </button>
-        </div>
-      </div>
       <div className="bg-white rounded-lg shadow-sm border border-brand-100 overflow-hidden">
         <table className="min-w-full divide-y divide-brand-100">
           <thead className="bg-gradient-to-r from-brand-50 to-brand-100">
@@ -155,9 +104,6 @@ const CustomerList = ({
               </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-brand-700">
                 전화번호
-              </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-brand-700">
-                성별
               </th>
               <th className="px-6 py-4 text-center text-sm font-semibold text-brand-700">
                 스탬프
@@ -197,13 +143,6 @@ const CustomerList = ({
                     <td className="px-6 py-4 text-sm text-gray-700">
                       {customer.phone}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-700">
-                      {customer.gender === 'male'
-                        ? '남성'
-                        : customer.gender === 'female'
-                        ? '여성'
-                        : '-'}
-                    </td>
                     <td className="px-6 py-4 text-center">
                       <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-semibold bg-brand-100 text-brand-700">
                         {stampCount}
@@ -225,65 +164,21 @@ const CustomerList = ({
                           className="w-16 px-2 py-1 text-xs border border-brand-200 rounded focus:outline-none focus:ring-1 focus:ring-brand-300 disabled:bg-gray-100"
                         />
                         <button
-                          onClick={() =>
-                            open({
-                              content: (
-                                <StampConfirmModal
-                                  mode="add"
-                                  amount={amount}
-                                  onCancel={close}
-                                  onConfirm={async () => {
-                                    await handleAdd(customer.id);
-                                    close();
-                                  }}
-                                />
-                              ),
-                              options: { dismissOnBackdrop: false },
-                            })
-                          }
+                          onClick={() => handleAdd(customer.id)}
                           disabled={isThisLoading}
                           className="px-2 py-1 text-xs font-medium text-white bg-gradient-to-r from-brand-500 to-brand-600 rounded hover:from-brand-600 hover:to-brand-700 transition-all shadow-sm disabled:opacity-50"
                         >
                           추가
                         </button>
                         <button
-                          onClick={() =>
-                            open({
-                              content: (
-                                <StampConfirmModal
-                                  mode="remove"
-                                  amount={amount}
-                                  onCancel={close}
-                                  onConfirm={async () => {
-                                    await handleRemove(customer.id);
-                                    close();
-                                  }}
-                                />
-                              ),
-                              options: { dismissOnBackdrop: false },
-                            })
-                          }
+                          onClick={() => handleRemove(customer.id)}
                           disabled={isThisLoading}
                           className="px-2 py-1 text-xs font-medium text-rose-700 bg-rose-50 border border-rose-200 rounded hover:bg-rose-100 transition-all disabled:opacity-50"
                         >
                           제거
                         </button>
                         <button
-                          onClick={() =>
-                            open({
-                              content: (
-                                <StampConfirmModal
-                                  mode="use10"
-                                  onCancel={close}
-                                  onConfirm={async () => {
-                                    await handleUse10(customer.id, stampCount);
-                                    close();
-                                  }}
-                                />
-                              ),
-                              options: { dismissOnBackdrop: false },
-                            })
-                          }
+                          onClick={() => handleUse10(customer.id, stampCount)}
                           disabled={isThisLoading || stampCount < 10}
                           className="px-2 py-1 text-xs font-medium text-brand-700 bg-white border border-brand-300 rounded hover:bg-brand-50 transition-all disabled:opacity-50"
                         >
@@ -306,6 +201,12 @@ const CustomerList = ({
             )}
           </tbody>
         </table>
+      </div>
+
+      <div className="mt-4 text-sm text-gray-600">
+        총{' '}
+        <span className="font-semibold text-brand-600">{customers.length}</span>
+        명
       </div>
     </div>
   );
