@@ -6,6 +6,9 @@ import toast from 'react-hot-toast';
 import { Customer } from '@/services/customerService';
 import { addStamp, removeStamp } from '@/services/stampService';
 import Loading from '@/_components/Loading';
+import { useModal } from '@/app/contexts/ModalContext';
+import CustomerCreateModal from '../CustomerCreateModal';
+import { createCustomer } from '@/services/customerService';
 
 interface CustomerListProps {
   customers: Customer[];
@@ -21,6 +24,7 @@ const CustomerList = ({
   onUpdate,
 }: CustomerListProps) => {
   const router = useRouter();
+  const { open, close } = useModal();
   const [loadingCustomerId, setLoadingCustomerId] = useState<string | null>(
     null
   );
@@ -92,6 +96,30 @@ const CustomerList = ({
 
   return (
     <div className="mt-6">
+      <div className="mb-3 flex justify-end">
+        <button
+          className="px-3 py-2 text-sm font-medium text-white bg-brand-500 rounded hover:bg-brand-600 transition-colors"
+          onClick={() =>
+            open({
+              content: (
+                <CustomerCreateModal
+                  onCancel={close}
+                  onSubmit={async (values) => {
+                    await createCustomer({
+                      name: values.name,
+                      phone: values.phone,
+                    });
+                    close();
+                    onUpdate();
+                  }}
+                />
+              ),
+            })
+          }
+        >
+          고객 추가
+        </button>
+      </div>
       <div className="bg-white rounded-lg shadow-sm border border-brand-100 overflow-hidden">
         <table className="min-w-full divide-y divide-brand-100">
           <thead className="bg-gradient-to-r from-brand-50 to-brand-100">
