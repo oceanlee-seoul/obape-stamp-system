@@ -9,6 +9,7 @@ import Loading from '@/_components/Loading';
 import { useModal } from '@/app/contexts/ModalContext';
 import CustomerCreateModal from '../CustomerCreateModal';
 import { createCustomer } from '@/services/customerService';
+import StampConfirmModal from '../StampConfirmModal';
 
 interface CustomerListProps {
   customers: Customer[];
@@ -224,21 +225,65 @@ const CustomerList = ({
                           className="w-16 px-2 py-1 text-xs border border-brand-200 rounded focus:outline-none focus:ring-1 focus:ring-brand-300 disabled:bg-gray-100"
                         />
                         <button
-                          onClick={() => handleAdd(customer.id)}
+                          onClick={() =>
+                            open({
+                              content: (
+                                <StampConfirmModal
+                                  mode="add"
+                                  amount={amount}
+                                  onCancel={close}
+                                  onConfirm={async () => {
+                                    await handleAdd(customer.id);
+                                    close();
+                                  }}
+                                />
+                              ),
+                              options: { dismissOnBackdrop: false },
+                            })
+                          }
                           disabled={isThisLoading}
                           className="px-2 py-1 text-xs font-medium text-white bg-gradient-to-r from-brand-500 to-brand-600 rounded hover:from-brand-600 hover:to-brand-700 transition-all shadow-sm disabled:opacity-50"
                         >
                           추가
                         </button>
                         <button
-                          onClick={() => handleRemove(customer.id)}
+                          onClick={() =>
+                            open({
+                              content: (
+                                <StampConfirmModal
+                                  mode="remove"
+                                  amount={amount}
+                                  onCancel={close}
+                                  onConfirm={async () => {
+                                    await handleRemove(customer.id);
+                                    close();
+                                  }}
+                                />
+                              ),
+                              options: { dismissOnBackdrop: false },
+                            })
+                          }
                           disabled={isThisLoading}
                           className="px-2 py-1 text-xs font-medium text-rose-700 bg-rose-50 border border-rose-200 rounded hover:bg-rose-100 transition-all disabled:opacity-50"
                         >
                           제거
                         </button>
                         <button
-                          onClick={() => handleUse10(customer.id, stampCount)}
+                          onClick={() =>
+                            open({
+                              content: (
+                                <StampConfirmModal
+                                  mode="use10"
+                                  onCancel={close}
+                                  onConfirm={async () => {
+                                    await handleUse10(customer.id, stampCount);
+                                    close();
+                                  }}
+                                />
+                              ),
+                              options: { dismissOnBackdrop: false },
+                            })
+                          }
                           disabled={isThisLoading || stampCount < 10}
                           className="px-2 py-1 text-xs font-medium text-brand-700 bg-white border border-brand-300 rounded hover:bg-brand-50 transition-all disabled:opacity-50"
                         >

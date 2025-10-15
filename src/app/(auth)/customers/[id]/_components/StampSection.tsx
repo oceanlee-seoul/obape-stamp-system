@@ -4,6 +4,8 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import StampCards from './StampCards';
 import { addStamp, removeStamp } from '@/services/stampService';
+import { useModal } from '@/app/contexts/ModalContext';
+import StampConfirmModal from '../../_components/StampConfirmModal';
 
 interface StampSectionProps {
   stampCount: number;
@@ -18,6 +20,7 @@ const StampSection = ({
 }: StampSectionProps) => {
   const [amount, setAmount] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const { open, close } = useModal();
 
   const handleAdd = async () => {
     if (amount < 1) return;
@@ -95,14 +98,44 @@ const StampSection = ({
             className="flex-1 px-3 py-2 border border-brand-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-transparent disabled:bg-gray-100"
           />
           <button
-            onClick={handleAdd}
+            onClick={() =>
+              open({
+                content: (
+                  <StampConfirmModal
+                    mode="add"
+                    amount={amount}
+                    onCancel={close}
+                    onConfirm={async () => {
+                      await handleAdd();
+                      close();
+                    }}
+                  />
+                ),
+                options: { dismissOnBackdrop: false },
+              })
+            }
             disabled={isLoading}
             className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-brand-500 to-brand-600 rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? '...' : '추가'}
           </button>
           <button
-            onClick={handleRemove}
+            onClick={() =>
+              open({
+                content: (
+                  <StampConfirmModal
+                    mode="remove"
+                    amount={amount}
+                    onCancel={close}
+                    onConfirm={async () => {
+                      await handleRemove();
+                      close();
+                    }}
+                  />
+                ),
+                options: { dismissOnBackdrop: false },
+              })
+            }
             disabled={isLoading}
             className="px-4 py-2 text-sm font-medium text-rose-700 bg-white border border-rose-300 rounded-lg hover:bg-rose-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
@@ -113,7 +146,21 @@ const StampSection = ({
         {/* 10개 사용처리 버튼 */}
         <div>
           <button
-            onClick={handleUse10}
+            onClick={() =>
+              open({
+                content: (
+                  <StampConfirmModal
+                    mode="use10"
+                    onCancel={close}
+                    onConfirm={async () => {
+                      await handleUse10();
+                      close();
+                    }}
+                  />
+                ),
+                options: { dismissOnBackdrop: false },
+              })
+            }
             disabled={isLoading || stampCount < 10}
             className="w-full px-4 py-3 text-sm font-medium text-brand-700 bg-white border-2 border-brand-300 rounded-lg hover:bg-brand-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
