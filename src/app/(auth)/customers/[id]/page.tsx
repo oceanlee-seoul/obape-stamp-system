@@ -81,7 +81,7 @@ export default function CustomerDetailPage() {
       </div>
 
       {/* 로그 섹션 */}
-      <div>
+      <div className="mb-10">
         <LogList logs={logs} isLoading={logsLoading} error={logsError} />
       </div>
     </div>
