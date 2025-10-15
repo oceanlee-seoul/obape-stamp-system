@@ -45,6 +45,7 @@ const LogList = ({ logs, isLoading, error }: LogListProps) => {
             작업 이력이 없습니다.
           </div>
         ) : (
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           logs.map((log: any) => {
             const actionInfo = getActionText(log.action);
             return (
