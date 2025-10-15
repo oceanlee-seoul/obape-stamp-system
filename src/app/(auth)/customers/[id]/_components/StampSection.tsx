@@ -75,7 +75,7 @@ const StampSection = ({
   };
 
   return (
-    <section className="flex-1 bg-gradient-to-br from-brand-50 to-brand-100 rounded-lg shadow-sm border border-brand-200 p-6">
+    <section className="flex-1 h-full bg-gradient-to-br from-brand-50 to-brand-100 rounded-lg shadow-sm border border-brand-200 p-6">
       <h2 className="text-xl font-semibold text-brand-700 mb-6 pb-3 border-b border-brand-200">
         스탬프 현황
       </h2>

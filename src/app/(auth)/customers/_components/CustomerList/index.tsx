@@ -105,15 +105,28 @@ const CustomerList = ({
                 <CustomerCreateModal
                   onCancel={close}
                   onSubmit={async (values) => {
-                    await createCustomer({
-                      name: values.name,
-                      phone: values.phone,
-                    });
-                    close();
-                    onUpdate();
+                    try {
+                      await createCustomer({
+                        name: values.name,
+                        phone: values.phone,
+                        gender: values.gender,
+                        note: values.note,
+                      });
+                      toast.success('고객이 추가되었습니다.');
+                      close();
+                      onUpdate();
+                    } catch (err) {
+                      console.error('고객 추가 실패:', err);
+                      toast.error(
+                        err instanceof Error
+                          ? err.message
+                          : '고객 추가에 실패했습니다.'
+                      );
+                    }
                   }}
                 />
               ),
+              options: { dismissOnBackdrop: false, dismissOnEsc: true },
             })
           }
         >
@@ -132,6 +145,9 @@ const CustomerList = ({
               </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-brand-700">
                 전화번호
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-brand-700">
+                성별
               </th>
               <th className="px-6 py-4 text-center text-sm font-semibold text-brand-700">
                 스탬프
@@ -170,6 +186,13 @@ const CustomerList = ({
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-700">
                       {customer.phone}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-700">
+                      {customer.gender === 'male'
+                        ? '남성'
+                        : customer.gender === 'female'
+                        ? '여성'
+                        : '-'}
                     </td>
                     <td className="px-6 py-4 text-center">
                       <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-semibold bg-brand-100 text-brand-700">
