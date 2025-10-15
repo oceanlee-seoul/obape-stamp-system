@@ -69,8 +69,10 @@ export default function CustomerDetailPage() {
       </div>
 
       {/* 메인 컨텐츠 */}
-      <div className="flex gap-6 mb-6">
-        <CustomerInfo customer={customer} />
+      <div className="flex gap-6 mb-6 items-stretch">
+        <div className="flex-1 self-stretch">
+          <CustomerInfo customer={customer} />
+        </div>
         <StampSection
           stampCount={stampCount}
           customerId={customerId}
@@ -79,7 +81,7 @@ export default function CustomerDetailPage() {
       </div>
 
       {/* 로그 섹션 */}
-      <div>
+      <div className="mb-10">
         <LogList logs={logs} isLoading={logsLoading} error={logsError} />
       </div>
     </div>
