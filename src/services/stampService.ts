@@ -72,23 +72,13 @@ export const removeStamp = async (customerId: string, amount: number = 1) => {
     throw new Error('제거할 스탬프가 부족합니다');
   }
 
-  if (newCount === 0) {
-    // count가 0이 되면 레코드 삭제
-    const { error: deleteError } = await supabase
-      .from('stamps')
-      .delete()
-      .eq('customer_id', customerId);
+  // count 업데이트 (0이 되어도 레코드는 유지하여 UI 일관성 확보)
+  const { error: updateError } = await supabase
+    .from('stamps')
+    .update({ count: newCount })
+    .eq('customer_id', customerId);
 
-    if (deleteError) throw deleteError;
-  } else {
-    // count 감소
-    const { error } = await supabase
-      .from('stamps')
-      .update({ count: newCount })
-      .eq('customer_id', customerId);
-
-    if (error) throw error;
-  }
+  if (updateError) throw updateError;
 
   // 로그 추가
   await createLog(customerId, `remove-${amount}`);
