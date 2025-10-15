@@ -5,8 +5,6 @@ interface CustomerDetail {
   id: string;
   name: string;
   phone: string;
-  gender?: 'male' | 'female';
-  note?: string | null;
   created_at: string;
   stamps: { count: number }[];
 }

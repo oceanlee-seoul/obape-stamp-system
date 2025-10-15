@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { ModalProvider } from './contexts/ModalContext';
 
 export const metadata: Metadata = {
   title: 'OSS - Obape Stamp System',
@@ -17,9 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>
-        <ModalProvider>{children}</ModalProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

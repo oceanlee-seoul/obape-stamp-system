@@ -25,15 +25,12 @@ const LogList = ({ logs, isLoading, error }: LogListProps) => {
   const getActionText = (action: string) => {
     if (action.startsWith('add-')) {
       const amount = action.replace('add-', '');
-      return {
-        text: `${amount}개 추가`,
-        color: 'text-emerald-700 bg-emerald-100',
-      };
+      return { text: `${amount}개 추가`, color: 'text-brand-600 bg-brand-50' };
     } else if (action.startsWith('remove-')) {
       const amount = action.replace('remove-', '');
-      return { text: `${amount}개 제거`, color: 'text-rose-700 bg-rose-100' };
+      return { text: `${amount}개 제거`, color: 'text-rose-600 bg-rose-50' };
     }
-    return { text: action, color: 'text-gray-700 bg-gray-100' };
+    return { text: action, color: 'text-gray-600 bg-gray-50' };
   };
 
   return (
