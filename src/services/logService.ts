@@ -91,6 +91,7 @@ export const getLogs = async (limit = 10, offset = 0) => {
     .range(from, to);
 
   if (error) throw error;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return data as any[];
 };
 
