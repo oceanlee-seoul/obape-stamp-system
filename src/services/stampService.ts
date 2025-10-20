@@ -11,7 +11,11 @@ export interface Stamp {
 /**
  * 스탬프 추가 (count 증가)
  */
-export const addStamp = async (customerId: string, amount: number = 1) => {
+export const addStamp = async (
+  customerId: string,
+  amount: number = 1,
+  note: string = ''
+) => {
   // 먼저 해당 customer의 stamp 레코드가 있는지 확인
   const { data: existing } = await supabase
     .from('stamps')
@@ -45,7 +49,7 @@ export const addStamp = async (customerId: string, amount: number = 1) => {
   }
 
   // 로그 추가
-  await createLog(customerId, `add-${amount}`);
+  await createLog(customerId, `add-${amount}`, note);
 
   return result;
 };
@@ -53,7 +57,11 @@ export const addStamp = async (customerId: string, amount: number = 1) => {
 /**
  * 스탬프 제거 (count 감소)
  */
-export const removeStamp = async (customerId: string, amount: number = 1) => {
+export const removeStamp = async (
+  customerId: string,
+  amount: number = 1,
+  note: string = ''
+) => {
   // 먼저 해당 customer의 stamp 레코드 확인
   const { data: existing, error: findError } = await supabase
     .from('stamps')
@@ -81,7 +89,7 @@ export const removeStamp = async (customerId: string, amount: number = 1) => {
   if (updateError) throw updateError;
 
   // 로그 추가
-  await createLog(customerId, `remove-${amount}`);
+  await createLog(customerId, `remove-${amount}`, note);
 };
 
 /**

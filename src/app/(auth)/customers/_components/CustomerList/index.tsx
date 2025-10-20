@@ -31,11 +31,11 @@ const CustomerList = ({
   );
   const [amounts, setAmounts] = useState<Record<string, number>>({});
 
-  const handleAdd = async (customerId: string) => {
+  const handleAdd = async (customerId: string, modalNote?: string) => {
     const amount = amounts[customerId] || 1;
     try {
       setLoadingCustomerId(customerId);
-      await addStamp(customerId, amount);
+      await addStamp(customerId, amount, modalNote ?? '');
       onUpdate();
       toast.success(`스탬프 ${amount}개 추가 완료!`);
       setAmounts({ ...amounts, [customerId]: 1 });
@@ -47,11 +47,11 @@ const CustomerList = ({
     }
   };
 
-  const handleRemove = async (customerId: string) => {
+  const handleRemove = async (customerId: string, modalNote?: string) => {
     const amount = amounts[customerId] || 1;
     try {
       setLoadingCustomerId(customerId);
-      await removeStamp(customerId, amount);
+      await removeStamp(customerId, amount, modalNote ?? '');
       onUpdate();
       toast.success(`스탬프 ${amount}개 제거 완료!`);
       setAmounts({ ...amounts, [customerId]: 1 });
@@ -65,7 +65,11 @@ const CustomerList = ({
     }
   };
 
-  const handleUse10 = async (customerId: string, stampCount: number) => {
+  const handleUse10 = async (
+    customerId: string,
+    stampCount: number,
+    modalNote?: string
+  ) => {
     if (stampCount < 10) {
       toast.error('스탬프가 10개 미만입니다.');
       return;
@@ -73,7 +77,7 @@ const CustomerList = ({
 
     try {
       setLoadingCustomerId(customerId);
-      await removeStamp(customerId, 10);
+      await removeStamp(customerId, 10, modalNote ?? '');
       onUpdate();
       toast.success('10개 사용처리 완료! 🎉');
     } catch (error) {
@@ -232,8 +236,8 @@ const CustomerList = ({
                                   mode="add"
                                   amount={amount}
                                   onCancel={close}
-                                  onConfirm={async () => {
-                                    await handleAdd(customer.id);
+                                  onConfirm={async (modalNote?: string) => {
+                                    await handleAdd(customer.id, modalNote);
                                     close();
                                   }}
                                 />
@@ -254,8 +258,8 @@ const CustomerList = ({
                                   mode="remove"
                                   amount={amount}
                                   onCancel={close}
-                                  onConfirm={async () => {
-                                    await handleRemove(customer.id);
+                                  onConfirm={async (modalNote?: string) => {
+                                    await handleRemove(customer.id, modalNote);
                                     close();
                                   }}
                                 />
@@ -275,8 +279,12 @@ const CustomerList = ({
                                 <StampConfirmModal
                                   mode="use10"
                                   onCancel={close}
-                                  onConfirm={async () => {
-                                    await handleUse10(customer.id, stampCount);
+                                  onConfirm={async (modalNote?: string) => {
+                                    await handleUse10(
+                                      customer.id,
+                                      stampCount,
+                                      modalNote
+                                    );
                                     close();
                                   }}
                                 />
