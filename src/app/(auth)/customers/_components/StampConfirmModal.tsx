@@ -10,10 +10,11 @@ export default function StampConfirmModal({
 }: {
   mode: 'add' | 'remove' | 'use10';
   amount?: number;
-  onConfirm: () => Promise<void> | void;
+  onConfirm: (note?: string) => Promise<void> | void;
   onCancel: () => void;
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [note, setNote] = useState('');
 
   const title =
     mode === 'add'
@@ -32,7 +33,7 @@ export default function StampConfirmModal({
   const handleConfirm = async () => {
     try {
       setIsSubmitting(true);
-      await onConfirm();
+      await onConfirm(note);
     } finally {
       setIsSubmitting(false);
     }
@@ -42,6 +43,18 @@ export default function StampConfirmModal({
     <div className="w-full">
       <h2 className="text-lg font-semibold mb-2">{title}</h2>
       <p className="text-sm opacity-80 mb-4">{description}</p>
+
+      {/* 메모 입력 */}
+      <div className="mb-4">
+        <label className="block text-sm text-gray-600 mb-1">메모 (선택)</label>
+        <input
+          type="text"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          className="w-full px-3 py-2 border border-brand-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-transparent"
+          placeholder="예: 이벤트 참여, 프로모션, 기타 사유"
+        />
+      </div>
 
       {/* 수량 입력은 사전에 입력된 값을 그대로 사용합니다. */}
 

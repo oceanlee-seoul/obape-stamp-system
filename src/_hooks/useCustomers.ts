@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   getCustomers,
   Customer,
@@ -7,10 +7,15 @@ import {
 
 export const useCustomers = (initialParams?: SearchParams) => {
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [searchParams, setSearchParams] = useState<SearchParams>(
     initialParams || {}
+  );
+
+  const hasQuery = useMemo(
+    () => !!searchParams.keyword && searchParams.keyword.trim().length > 0,
+    [searchParams.keyword]
   );
 
   const fetchCustomers = useCallback(async () => {
@@ -29,15 +34,22 @@ export const useCustomers = (initialParams?: SearchParams) => {
   }, [searchParams]);
 
   useEffect(() => {
-    fetchCustomers();
-  }, [fetchCustomers]);
+    if (hasQuery) {
+      fetchCustomers();
+    } else {
+      // Reset state when no query; don't fetch
+      setCustomers([]);
+      setError('');
+      setIsLoading(false);
+    }
+  }, [fetchCustomers, hasQuery]);
 
   const search = (target: string, keyword: string) => {
     setSearchParams({ target: target as SearchParams['target'], keyword });
   };
 
   const refresh = () => {
-    fetchCustomers();
+    if (hasQuery) fetchCustomers();
   };
 
   return {
@@ -46,5 +58,6 @@ export const useCustomers = (initialParams?: SearchParams) => {
     error,
     search,
     refresh,
+    hasQuery,
   };
 };

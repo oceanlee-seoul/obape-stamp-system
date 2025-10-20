@@ -22,12 +22,12 @@ const StampSection = ({
   const [isLoading, setIsLoading] = useState(false);
   const { open, close } = useModal();
 
-  const handleAdd = async () => {
+  const handleAdd = async (memo?: string) => {
     if (amount < 1) return;
 
     try {
       setIsLoading(true);
-      await addStamp(customerId, amount);
+      await addStamp(customerId, amount, memo ?? '');
       onUpdate(); // 데이터 새로고침
       toast.success(`스탬프 ${amount}개 추가 완료!`);
       setAmount(1); // 입력값 초기화
@@ -39,12 +39,12 @@ const StampSection = ({
     }
   };
 
-  const handleRemove = async () => {
+  const handleRemove = async (memo?: string) => {
     if (amount < 1) return;
 
     try {
       setIsLoading(true);
-      await removeStamp(customerId, amount);
+      await removeStamp(customerId, amount, memo ?? '');
       onUpdate(); // 데이터 새로고침
       toast.success(`스탬프 ${amount}개 제거 완료!`);
       setAmount(1); // 입력값 초기화
@@ -58,7 +58,7 @@ const StampSection = ({
     }
   };
 
-  const handleUse10 = async () => {
+  const handleUse10 = async (memo?: string) => {
     if (stampCount < 10) {
       toast.error('스탬프가 10개 미만입니다.');
       return;
@@ -66,7 +66,7 @@ const StampSection = ({
 
     try {
       setIsLoading(true);
-      await removeStamp(customerId, 10);
+      await removeStamp(customerId, 10, memo ?? '');
       onUpdate();
       toast.success('10개 사용처리 완료! 🎉');
     } catch (error) {
@@ -105,8 +105,8 @@ const StampSection = ({
                     mode="add"
                     amount={amount}
                     onCancel={close}
-                    onConfirm={async () => {
-                      await handleAdd();
+                    onConfirm={async (modalNote?: string) => {
+                      await handleAdd(modalNote);
                       close();
                     }}
                   />
@@ -127,8 +127,8 @@ const StampSection = ({
                     mode="remove"
                     amount={amount}
                     onCancel={close}
-                    onConfirm={async () => {
-                      await handleRemove();
+                    onConfirm={async (modalNote?: string) => {
+                      await handleRemove(modalNote);
                       close();
                     }}
                   />
@@ -152,8 +152,8 @@ const StampSection = ({
                   <StampConfirmModal
                     mode="use10"
                     onCancel={close}
-                    onConfirm={async () => {
-                      await handleUse10();
+                    onConfirm={async (modalNote?: string) => {
+                      await handleUse10(modalNote);
                       close();
                     }}
                   />

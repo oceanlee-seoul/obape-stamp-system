@@ -48,7 +48,13 @@ export const createLog = async (
 /**
  * 특정 고객의 로그 조회 (최신순)
  */
-export const getLogsByCustomer = async (customerId: string) => {
+export const getLogsByCustomer = async (
+  customerId: string,
+  limit = 10,
+  offset = 0
+) => {
+  const from = offset;
+  const to = offset + limit - 1;
   const { data, error } = await supabase
     .from('logs')
     .select(
@@ -58,9 +64,47 @@ export const getLogsByCustomer = async (customerId: string) => {
     `
     )
     .eq('customer_id', customerId)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .range(from, to);
 
   if (error) throw error;
 
   return data as Log[];
+};
+
+/**
+ * 전체 로그 조회 (페이지네이션)
+ */
+export const getLogs = async (limit = 10, offset = 0) => {
+  const from = offset;
+  const to = offset + limit - 1;
+  const { data, error } = await supabase
+    .from('logs')
+    .select(
+      `
+      *,
+      users!admin_id(name, email),
+      customers(name, phone)
+    `
+    )
+    .order('created_at', { ascending: false })
+    .range(from, to);
+
+  if (error) throw error;
+  return data as any[];
+};
+
+/**
+ * 로그 노트 업데이트
+ */
+export const updateLogNote = async (logId: string, note: string) => {
+  const { data, error } = await supabase
+    .from('logs')
+    .update({ note })
+    .eq('id', logId)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data as Log;
 };

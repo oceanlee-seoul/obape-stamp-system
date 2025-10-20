@@ -37,8 +37,9 @@ export default function CustomerCreateModal({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<FormValues>({
+    mode: 'onChange',
     resolver: zodResolver(schema),
     defaultValues: { gender: 'male' },
   });
@@ -49,15 +50,19 @@ export default function CustomerCreateModal({
         await onSubmit(values);
       })}
       className="w-full"
+      noValidate
     >
       <h2 className="text-lg font-semibold mb-3">고객 추가</h2>
 
       <div className="space-y-3">
         <div>
-          <label className="block text-sm font-medium mb-1">이름</label>
+          <label className="block text-sm font-medium mb-1">
+            이름 <span className="text-rose-600">*</span>
+          </label>
           <input
             className="w-full rounded border border-brand-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300"
-            placeholder="홍길동"
+            placeholder="홍길동(숫자)"
+            aria-invalid={!!errors.name || undefined}
             {...register('name')}
           />
           {errors.name && (
@@ -66,10 +71,13 @@ export default function CustomerCreateModal({
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">전화번호</label>
+          <label className="block text-sm font-medium mb-1">
+            전화번호 <span className="text-rose-600">*</span>
+          </label>
           <input
             className="w-full rounded border border-brand-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300"
-            placeholder="010-1234-5678"
+            placeholder="'-' 없이 숫자만 (ex: 01012345678)"
+            aria-invalid={!!errors.phone || undefined}
             {...register('phone')}
           />
           {errors.phone && (
@@ -78,7 +86,9 @@ export default function CustomerCreateModal({
         </div>
 
         <div>
-          <span className="block text-sm font-medium mb-1">성별</span>
+          <span className="block text-sm font-medium mb-1">
+            성별 <span className="text-rose-600">*</span>
+          </span>
           <div className="flex items-center gap-4">
             <label className="inline-flex items-center gap-2 text-sm">
               <input type="radio" value="male" {...register('gender')} />
@@ -100,7 +110,8 @@ export default function CustomerCreateModal({
           <label className="block text-sm font-medium mb-1">메모</label>
           <textarea
             className="w-full min-h-24 rounded border border-brand-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300"
-            placeholder="특이사항을 입력하세요."
+            placeholder="결제관련 특이사항, 주소지 등"
+            aria-invalid={!!errors.note || undefined}
             {...register('note')}
           />
           {errors.note && (
@@ -119,7 +130,7 @@ export default function CustomerCreateModal({
         </button>
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !isValid}
           className="px-3 py-2 text-sm rounded bg-brand-500 text-white hover:bg-brand-600 disabled:opacity-50"
         >
           {isSubmitting ? '등록 중...' : '등록'}

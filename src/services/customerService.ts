@@ -76,6 +76,19 @@ export const createCustomer = async (customer: {
   gender: 'male' | 'female';
   note?: string;
 }) => {
+  // duplicate check
+  const { data: existing, error: existingError } = await supabase
+    .from('customers')
+    .select('id')
+    .eq('name', customer.name)
+    .eq('phone', customer.phone)
+    .maybeSingle();
+
+  if (existingError) throw existingError;
+  if (existing) {
+    throw new Error('DUPLICATE_CUSTOMER');
+  }
+
   const { data, error } = await supabase
     .from('customers')
     .insert(customer)
