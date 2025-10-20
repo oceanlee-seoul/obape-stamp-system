@@ -7,6 +7,7 @@ import CustomerInfo from './_components/CustomerInfo';
 import StampSection from './_components/StampSection';
 import LogList from './_components/LogList';
 import Loading from '@/_components/Loading';
+import toast from 'react-hot-toast';
 
 export default function CustomerDetailPage() {
   const params = useParams();
@@ -18,6 +19,8 @@ export default function CustomerDetailPage() {
     isLoading: logsLoading,
     error: logsError,
     refresh: refreshLogs,
+    loadMore,
+    hasMore,
   } = useLogs(customerId);
 
   const handleUpdate = () => {
@@ -83,6 +86,21 @@ export default function CustomerDetailPage() {
       {/* 로그 섹션 */}
       <div className="mb-10">
         <LogList logs={logs} isLoading={logsLoading} error={logsError} />
+        <div className="mt-4 flex justify-center">
+          {logsLoading ? null : hasMore ? (
+            <button
+              onClick={async () => {
+                const added = await loadMore();
+                if (added > 0) toast.success(`${added}개 더 불러오기 성공!`);
+              }}
+              className="px-4 py-2 text-sm font-medium text-brand-700 bg-white border border-brand-300 rounded-lg hover:bg-brand-50 transition-all"
+            >
+              더 불러오기
+            </button>
+          ) : (
+            <div className="text-xs text-gray-400">마지막 페이지입니다.</div>
+          )}
+        </div>
       </div>
     </div>
   );
