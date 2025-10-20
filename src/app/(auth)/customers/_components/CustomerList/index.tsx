@@ -100,51 +100,14 @@ const CustomerList = ({
   }
 
   return (
-    <div className="mt-6 mb-10">
-      <div className="flex justify-between items-center mb-3">
-        <div className="mt-4 text-sm text-gray-600">
+    <div className="mb-10">
+      <div className="flex justify-start items-center mb-3">
+        <div className="text-sm text-gray-600">
           총{' '}
           <span className="font-semibold text-brand-600">
             {customers.length}
           </span>
           명
-        </div>
-        <div className="flex justify-end">
-          <button
-            className="px-3 py-2 text-sm font-medium text-white bg-brand-500 rounded hover:bg-brand-600 transition-colors"
-            onClick={() =>
-              open({
-                content: (
-                  <CustomerCreateModal
-                    onCancel={close}
-                    onSubmit={async (values) => {
-                      try {
-                        await createCustomer({
-                          name: values.name,
-                          phone: values.phone,
-                          gender: values.gender,
-                          note: values.note,
-                        });
-                        toast.success('고객이 추가되었습니다.');
-                        close();
-                        onUpdate();
-                      } catch (err) {
-                        console.error('고객 추가 실패:', err);
-                        toast.error(
-                          err instanceof Error
-                            ? err.message
-                            : '고객 추가에 실패했습니다.'
-                        );
-                      }
-                    }}
-                  />
-                ),
-                options: { dismissOnBackdrop: false, dismissOnEsc: true },
-              })
-            }
-          >
-            고객 추가
-          </button>
         </div>
       </div>
       <div className="bg-white rounded-lg shadow-sm border border-brand-100 overflow-hidden">

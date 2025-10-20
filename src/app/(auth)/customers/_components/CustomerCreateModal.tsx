@@ -61,7 +61,7 @@ export default function CustomerCreateModal({
           </label>
           <input
             className="w-full rounded border border-brand-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300"
-            placeholder="홍길동"
+            placeholder="홍길동(숫자)"
             aria-invalid={!!errors.name || undefined}
             {...register('name')}
           />
@@ -76,7 +76,7 @@ export default function CustomerCreateModal({
           </label>
           <input
             className="w-full rounded border border-brand-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300"
-            placeholder="010-1234-5678"
+            placeholder="'-' 없이 숫자만 (ex: 01012345678)"
             aria-invalid={!!errors.phone || undefined}
             {...register('phone')}
           />
@@ -110,7 +110,7 @@ export default function CustomerCreateModal({
           <label className="block text-sm font-medium mb-1">메모</label>
           <textarea
             className="w-full min-h-24 rounded border border-brand-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300"
-            placeholder="특이사항을 입력하세요."
+            placeholder="결제관련 특이사항, 주소지 등"
             aria-invalid={!!errors.note || undefined}
             {...register('note')}
           />
