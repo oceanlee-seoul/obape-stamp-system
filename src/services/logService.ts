@@ -64,3 +64,18 @@ export const getLogsByCustomer = async (customerId: string) => {
 
   return data as Log[];
 };
+
+/**
+ * 로그 노트 업데이트
+ */
+export const updateLogNote = async (logId: string, note: string) => {
+  const { data, error } = await supabase
+    .from('logs')
+    .update({ note })
+    .eq('id', logId)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data as Log;
+};
