@@ -100,7 +100,7 @@ const CustomerList = ({
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-6 mb-10">
       <div className="flex justify-between items-center mb-3">
         <div className="mt-4 text-sm text-gray-600">
           총{' '}
@@ -175,7 +175,7 @@ const CustomerList = ({
             {customers.length === 0 ? (
               <tr>
                 <td
-                  colSpan={5}
+                  colSpan={6}
                   className="px-6 py-10 text-center text-gray-500"
                 >
                   고객 데이터가 없습니다.
