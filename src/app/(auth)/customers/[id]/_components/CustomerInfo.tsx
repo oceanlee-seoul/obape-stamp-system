@@ -6,14 +6,24 @@ interface CustomerInfoProps {
     note?: string | null;
     created_at: string;
   };
+  onEdit?: () => void;
 }
 
-const CustomerInfo = ({ customer }: CustomerInfoProps) => {
+const CustomerInfo = ({ customer, onEdit }: CustomerInfoProps) => {
   return (
     <section className="flex-1 h-full bg-white rounded-lg shadow-sm border border-brand-100 p-6">
-      <h2 className="text-xl font-semibold text-brand-700 mb-6 pb-3 border-b border-brand-100">
-        고객 정보
-      </h2>
+      <div className="flex items-center justify-between mb-6 pb-3 border-b border-brand-100">
+        <h2 className="text-xl font-semibold text-brand-700">고객 정보</h2>
+        {onEdit && (
+          <button
+            onClick={onEdit}
+            className="p-2 rounded-lg hover:bg-brand-50 text-gray-500 hover:text-brand-600 transition-colors"
+            aria-label="고객 정보 수정"
+          >
+            ✏️
+          </button>
+        )}
+      </div>
 
       <div className="space-y-4">
         <div>

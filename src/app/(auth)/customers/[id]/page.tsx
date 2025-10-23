@@ -6,13 +6,17 @@ import { useLogs } from '@/_hooks/useLogs';
 import CustomerInfo from './_components/CustomerInfo';
 import StampSection from './_components/StampSection';
 import LogList from './_components/LogList';
+import CustomerEditModal from './_components/CustomerEditModal';
 import Loading from '@/_components/Loading';
 import toast from 'react-hot-toast';
+import { useModal } from '@/app/contexts/ModalContext';
+import { updateCustomer } from '@/services/customerService';
 
 export default function CustomerDetailPage() {
   const params = useParams();
   const router = useRouter();
   const customerId = params.id as string;
+  const { open, close } = useModal();
   const { customer, isLoading, error, refresh } = useCustomer(customerId);
   const {
     logs,
@@ -26,6 +30,26 @@ export default function CustomerDetailPage() {
   const handleUpdate = () => {
     refresh();
     refreshLogs();
+  };
+
+  const handleEditCustomer = async (values: {
+    name: string;
+    phone: string;
+    gender: 'male' | 'female';
+    note?: string;
+  }) => {
+    try {
+      await updateCustomer(customerId, values);
+      toast.success('고객 정보가 수정되었습니다.');
+      close();
+      handleUpdate();
+    } catch (error: any) {
+      if (error.message === 'DUPLICATE_CUSTOMER') {
+        toast.error('이미 존재하는 전화번호입니다.');
+      } else {
+        toast.error('고객 정보 수정에 실패했습니다.');
+      }
+    }
   };
 
   if (isLoading) {
@@ -74,7 +98,23 @@ export default function CustomerDetailPage() {
       {/* 메인 컨텐츠 */}
       <div className="flex gap-6 mb-6 items-stretch">
         <div className="flex-1 self-stretch">
-          <CustomerInfo customer={customer} />
+          <CustomerInfo
+            customer={customer}
+            onEdit={() => {
+              if (customer) {
+                open({
+                  content: (
+                    <CustomerEditModal
+                      customer={customer}
+                      onSubmit={handleEditCustomer}
+                      onCancel={close}
+                    />
+                  ),
+                  options: { dismissOnBackdrop: false, dismissOnEsc: true },
+                });
+              }
+            }}
+          />
         </div>
         <StampSection
           stampCount={stampCount}
