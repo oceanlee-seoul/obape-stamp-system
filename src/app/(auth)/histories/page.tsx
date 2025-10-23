@@ -45,11 +45,11 @@ export default function HistoriesPage() {
   }, [offset]);
 
   useEffect(() => {
-    // first load
+    // first load only
     if (offset === 0 && items.length === 0 && !isLoading) {
       void load();
     }
-  }, [offset, items.length, isLoading, load]);
+  }, []); // 의존성 배열을 비워서 한 번만 실행
 
   const getActionText = (action: string) => {
     if (action.startsWith('add-')) {
