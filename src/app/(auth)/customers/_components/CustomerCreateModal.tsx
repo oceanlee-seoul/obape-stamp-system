@@ -3,6 +3,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useState } from 'react';
 
 type FormValues = {
   name: string;
@@ -34,6 +35,9 @@ export default function CustomerCreateModal({
   onSubmit: (values: FormValues) => Promise<void> | void;
   onCancel: () => void;
 }) {
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [formData, setFormData] = useState<FormValues | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -44,11 +48,83 @@ export default function CustomerCreateModal({
     defaultValues: { gender: 'male' },
   });
 
+  const handleFormSubmit = (values: FormValues) => {
+    setFormData(values);
+    setShowConfirm(true);
+  };
+
+  const handleConfirm = async () => {
+    if (formData) {
+      await onSubmit(formData);
+    }
+  };
+
+  if (showConfirm && formData) {
+    return (
+      <div className="w-full">
+        <h2 className="text-lg font-semibold mb-4">고객 정보 확인</h2>
+
+        <div className="bg-gray-50 rounded-lg p-4 mb-6">
+          <div className="space-y-3">
+            <div>
+              <span className="text-sm font-medium text-gray-600">이름:</span>
+              <p className="text-base font-semibold text-gray-900">
+                {formData.name}
+              </p>
+            </div>
+            <div>
+              <span className="text-sm font-medium text-gray-600">
+                전화번호:
+              </span>
+              <p className="text-base font-semibold text-gray-900">
+                {formData.phone}
+              </p>
+            </div>
+            <div>
+              <span className="text-sm font-medium text-gray-600">성별:</span>
+              <p className="text-base font-semibold text-gray-900">
+                {formData.gender === 'male' ? '남성' : '여성'}
+              </p>
+            </div>
+            {formData.note && (
+              <div>
+                <span className="text-sm font-medium text-gray-600">메모:</span>
+                <p className="text-base text-gray-900">{formData.note}</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="text-center py-4">
+          <p className="text-gray-700 text-sm">
+            위 정보로 고객을 등록하시겠습니까?
+          </p>
+        </div>
+
+        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+          <button
+            type="button"
+            onClick={() => setShowConfirm(false)}
+            className="px-6 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            수정
+          </button>
+          <button
+            type="button"
+            disabled={isSubmitting}
+            onClick={handleConfirm}
+            className="px-6 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:bg-brand-300 disabled:opacity-50 transition-colors"
+          >
+            {isSubmitting ? '등록 중...' : '등록'}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <form
-      onSubmit={handleSubmit(async (values) => {
-        await onSubmit(values);
-      })}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className="w-full"
       noValidate
     >
@@ -120,10 +196,10 @@ export default function CustomerCreateModal({
         </div>
       </div>
 
-      <div className="mt-4 flex justify-end gap-2">
+      <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
         <button
           type="button"
-          className="px-3 py-2 text-sm rounded border border-brand-300 text-brand-700 hover:bg-brand-50"
+          className="px-6 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
           onClick={onCancel}
         >
           취소
@@ -131,7 +207,7 @@ export default function CustomerCreateModal({
         <button
           type="submit"
           disabled={isSubmitting || !isValid}
-          className="px-3 py-2 text-sm rounded bg-brand-500 text-white hover:bg-brand-600 disabled:opacity-50"
+          className="px-6 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:bg-brand-300 disabled:opacity-50 transition-colors"
         >
           {isSubmitting ? '등록 중...' : '등록'}
         </button>
