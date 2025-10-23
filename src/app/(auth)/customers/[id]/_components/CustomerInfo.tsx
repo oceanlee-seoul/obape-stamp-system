@@ -48,9 +48,9 @@ const CustomerInfo = ({ customer, onEdit }: CustomerInfoProps) => {
           </label>
           <p className="text-lg font-semibold text-gray-900">
             {customer.gender === 'male'
-              ? '남성'
+              ? '남자'
               : customer.gender === 'female'
-              ? '여성'
+              ? '여자'
               : '-'}
           </p>
         </div>

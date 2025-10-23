@@ -164,9 +164,9 @@ const CustomerList = ({
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-700">
                       {customer.gender === 'male'
-                        ? '남성'
+                        ? '남자'
                         : customer.gender === 'female'
-                        ? '여성'
+                        ? '여자'
                         : '-'}
                     </td>
                     <td className="px-6 py-4 text-center">
