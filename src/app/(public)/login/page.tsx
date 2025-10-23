@@ -75,7 +75,7 @@ export default function LoginPage() {
         {/* 제목 */}
         <div className="text-center mb-8">
           <h1 className="text-sm font-semibold text-brand-600 tracking-wider mb-2">
-            OBAPE STAMP SYSTEM
+            OVAPE STAMP SYSTEM
           </h1>
           <div className="h-px bg-gradient-to-r from-transparent via-brand-200 to-transparent mb-6" />
           <h2 className="text-2xl font-bold text-gray-800">로그인</h2>
