@@ -37,7 +37,7 @@ export default function StampConfirmModal({
       ? '예: [기기이름] [숫자]개 구매 , [액상이름] [30/60]ml [숫자]병 구매'
       : mode === 'remove'
       ? '제거 사유 입력'
-      : '예: [액상이름] [30/60]ml [숫자]병 쿠폰 사용';
+      : '예: [입/폐호흡] 쿠폰 사용';
 
   const handleConfirm = async () => {
     try {
@@ -78,7 +78,7 @@ export default function StampConfirmModal({
           type="text"
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-colors text-sm"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-colors text-xs"
           placeholder={notePlaceholder}
         />
       </div>

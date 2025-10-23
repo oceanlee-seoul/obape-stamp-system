@@ -111,7 +111,7 @@ export default function CustomerCreateModal({
             <div>
               <span className="text-sm font-medium text-gray-600">성별:</span>
               <p className="text-base font-semibold text-gray-900">
-                {formData.gender === 'male' ? '남성' : '여성'}
+                {formData.gender === 'male' ? '남자' : '여자'}
               </p>
             </div>
             {formData.note && (
@@ -197,11 +197,11 @@ export default function CustomerCreateModal({
           <div className="flex items-center gap-4">
             <label className="inline-flex items-center gap-2 text-sm">
               <input type="radio" value="male" {...register('gender')} />
-              남성
+              남자
             </label>
             <label className="inline-flex items-center gap-2 text-sm">
               <input type="radio" value="female" {...register('gender')} />
-              여성
+              여자
             </label>
           </div>
           {errors.gender && (
