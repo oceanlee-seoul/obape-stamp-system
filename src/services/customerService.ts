@@ -76,11 +76,10 @@ export const createCustomer = async (customer: {
   gender: 'male' | 'female';
   note?: string;
 }) => {
-  // duplicate check
+  // duplicate check by phone only
   const { data: existing, error: existingError } = await supabase
     .from('customers')
     .select('id')
-    .eq('name', customer.name)
     .eq('phone', customer.phone)
     .maybeSingle();
 
@@ -105,16 +104,38 @@ export const createCustomer = async (customer: {
  */
 export const updateCustomer = async (
   id: string,
-  updates: { name?: string; phone?: string }
+  updates: {
+    name?: string;
+    phone?: string;
+    gender?: 'male' | 'female';
+    note?: string;
+  }
 ) => {
+  // 중복 체크
+  if (updates.phone) {
+    const { data: existing, error: existingError } = await supabase
+      .from('customers')
+      .select('id')
+      .eq('phone', updates.phone)
+      .neq('id', id)
+      .maybeSingle();
+
+    if (existingError) throw existingError;
+    if (existing) {
+      throw new Error('DUPLICATE_CUSTOMER');
+    }
+  }
+
+  // 고객 업데이트 (결과 없을 수 있음)
   const { data, error } = await supabase
     .from('customers')
     .update(updates)
     .eq('id', id)
     .select()
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
+  if (!data) throw new Error('NOT_FOUND_CUSTOMER');
 
   return data;
 };

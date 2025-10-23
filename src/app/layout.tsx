@@ -3,8 +3,8 @@ import './globals.css';
 import { ModalProvider } from './contexts/ModalContext';
 
 export const metadata: Metadata = {
-  title: 'OSS - Obape Stamp System',
-  description: 'Obape Stamp System - 고객 스탬프 관리 시스템',
+  title: 'OSS - Ovape Stamp System',
+  description: 'Ovape Stamp System - 고객 스탬프 관리 시스템',
   icons: {
     icon: '/icon.png',
   },

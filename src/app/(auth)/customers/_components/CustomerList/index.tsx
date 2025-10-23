@@ -7,8 +7,6 @@ import { Customer } from '@/services/customerService';
 import { addStamp, removeStamp } from '@/services/stampService';
 import Loading from '@/_components/Loading';
 import { useModal } from '@/app/contexts/ModalContext';
-import CustomerCreateModal from '../CustomerCreateModal';
-import { createCustomer } from '@/services/customerService';
 import StampConfirmModal from '../StampConfirmModal';
 
 interface CustomerListProps {
@@ -196,6 +194,10 @@ const CustomerList = ({
                             open({
                               content: (
                                 <StampConfirmModal
+                                  target={{
+                                    name: customer.name,
+                                    phone: customer.phone,
+                                  }}
                                   mode="add"
                                   amount={amount}
                                   onCancel={close}
@@ -218,6 +220,10 @@ const CustomerList = ({
                             open({
                               content: (
                                 <StampConfirmModal
+                                  target={{
+                                    name: customer.name,
+                                    phone: customer.phone,
+                                  }}
                                   mode="remove"
                                   amount={amount}
                                   onCancel={close}
@@ -240,6 +246,10 @@ const CustomerList = ({
                             open({
                               content: (
                                 <StampConfirmModal
+                                  target={{
+                                    name: customer.name,
+                                    phone: customer.phone,
+                                  }}
                                   mode="use10"
                                   onCancel={close}
                                   onConfirm={async (modalNote?: string) => {

@@ -4,12 +4,14 @@ import { useEffect, useState, useCallback } from 'react';
 import { getLogs } from '@/services/logService';
 import Loading from '@/_components/Loading';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface HistoryItem {
   id: string;
   action: string;
   note: string;
   created_at: string;
+  customer_id: number;
   users?: { name?: string | null; email?: string | null } | null;
   customers?: { name?: string | null; phone?: string | null } | null;
 }
@@ -17,6 +19,7 @@ interface HistoryItem {
 const PAGE_SIZE = 10;
 
 export default function HistoriesPage() {
+  const router = useRouter();
   const [items, setItems] = useState<HistoryItem[]>([]);
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -93,20 +96,17 @@ export default function HistoriesPage() {
                     >
                       {actionInfo.text}
                     </span>
-                    <div>
-                      <p className="text-sm text-gray-600">
-                        작업자:{' '}
-                        <span className="font-medium text-gray-900">
-                          {log.users?.name || log.users?.email || '알 수 없음'}
-                        </span>
+                    <div
+                      className="cursor-pointer hover:bg-brand-100 hover:shadow-md p-3 rounded-lg transition-all duration-200 border border-transparent hover:border-brand-200"
+                      onClick={() =>
+                        router.push(`/customers/${log.customer_id}`)
+                      }
+                    >
+                      <p className="text-base font-semibold text-gray-900">
+                        {log.customers?.name || '이름 없음'}
                       </p>
-                      <p className="text-xs text-gray-600">
-                        고객:{' '}
-                        <span className="font-medium text-gray-900">
-                          {log.customers?.name || '이름 없음'}
-                        </span>
-                        <span className="text-gray-400"> · </span>
-                        <span>{log.customers?.phone || '-'}</span>
+                      <p className="text-sm text-gray-600">
+                        {log.customers?.phone || '-'}
                       </p>
                     </div>
                   </div>
@@ -119,14 +119,19 @@ export default function HistoriesPage() {
                     </div>
                   </div>
 
-                  <div className="text-xs text-gray-400">
-                    {new Date(log.created_at).toLocaleString('ko-KR', {
-                      year: 'numeric',
-                      month: '2-digit',
-                      day: '2-digit',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                  <div className="text-right">
+                    <div className="text-xs text-gray-400 mb-1">
+                      {log.users?.name || log.users?.email || '알 수 없음'}
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      {new Date(log.created_at).toLocaleString('ko-KR', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </div>
                   </div>
                 </div>
               );

@@ -52,10 +52,17 @@ const safeResolver = (schema: z.ZodTypeAny) => async (data: unknown) => {
   }
 };
 
-export default function CustomerCreateModal({
+export default function CustomerEditModal({
+  customer,
   onSubmit,
   onCancel,
 }: {
+  customer: {
+    name: string;
+    phone: string;
+    gender?: 'male' | 'female';
+    note?: string | null;
+  };
   onSubmit: (values: FormValues) => Promise<void> | void;
   onCancel: () => void;
 }) {
@@ -69,7 +76,12 @@ export default function CustomerCreateModal({
   } = useForm<FormValues>({
     mode: 'onChange',
     resolver: safeResolver(schema) as Resolver<FormValues, unknown>,
-    defaultValues: { name: '', phone: '', gender: 'male', note: '' },
+    defaultValues: {
+      name: customer.name,
+      phone: customer.phone,
+      gender: customer.gender || 'male',
+      note: customer.note || '',
+    },
   });
 
   const handleFormSubmit = (values: FormValues) => {
@@ -90,7 +102,7 @@ export default function CustomerCreateModal({
   if (showConfirm && formData) {
     return (
       <div className="w-full">
-        <h2 className="text-lg font-semibold mb-4">고객 정보 확인</h2>
+        <h2 className="text-lg font-semibold mb-4">고객 정보 수정 확인</h2>
 
         <div className="bg-gray-50 rounded-lg p-4 mb-6">
           <div className="space-y-3">
@@ -125,7 +137,7 @@ export default function CustomerCreateModal({
 
         <div className="text-center py-4">
           <p className="text-gray-700 text-sm">
-            위 정보로 고객을 등록하시겠습니까?
+            위 정보로 고객 정보를 수정하시겠습니까?
           </p>
         </div>
 
@@ -143,7 +155,7 @@ export default function CustomerCreateModal({
             onClick={handleConfirm}
             className="px-6 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:bg-brand-300 disabled:opacity-50 transition-colors"
           >
-            {isSubmitting ? '등록 중...' : '등록'}
+            {isSubmitting ? '수정 중...' : '수정'}
           </button>
         </div>
       </div>
@@ -156,7 +168,7 @@ export default function CustomerCreateModal({
       className="w-full"
       noValidate
     >
-      <h2 className="text-lg font-semibold mb-3">고객 추가</h2>
+      <h2 className="text-lg font-semibold mb-3">고객 정보 수정</h2>
 
       <div className="space-y-3">
         <div>
@@ -238,7 +250,7 @@ export default function CustomerCreateModal({
           disabled={isSubmitting}
           className="px-6 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:bg-brand-300 disabled:opacity-50 transition-colors"
         >
-          {isSubmitting ? '등록 중...' : '등록'}
+          {isSubmitting ? '수정 중...' : '수정'}
         </button>
       </div>
     </form>

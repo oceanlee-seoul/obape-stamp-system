@@ -9,13 +9,13 @@ import StampConfirmModal from '../../_components/StampConfirmModal';
 
 interface StampSectionProps {
   stampCount: number;
-  customerId: string;
+  target: { id: string; name: string; phone: string };
   onUpdate: () => void;
 }
 
 const StampSection = ({
   stampCount,
-  customerId,
+  target,
   onUpdate,
 }: StampSectionProps) => {
   const [amount, setAmount] = useState(1);
@@ -26,8 +26,8 @@ const StampSection = ({
     if (amount < 1) return;
 
     try {
-      setIsLoading(true);
-      await addStamp(customerId, amount, memo ?? '');
+      setIsLoading(true); 
+      await addStamp(target.id, amount, memo ?? '');
       onUpdate(); // 데이터 새로고침
       toast.success(`스탬프 ${amount}개 추가 완료!`);
       setAmount(1); // 입력값 초기화
@@ -44,7 +44,7 @@ const StampSection = ({
 
     try {
       setIsLoading(true);
-      await removeStamp(customerId, amount, memo ?? '');
+      await removeStamp(target.id, amount, memo ?? '');
       onUpdate(); // 데이터 새로고침
       toast.success(`스탬프 ${amount}개 제거 완료!`);
       setAmount(1); // 입력값 초기화
@@ -66,7 +66,7 @@ const StampSection = ({
 
     try {
       setIsLoading(true);
-      await removeStamp(customerId, 10, memo ?? '');
+      await removeStamp(target.id, 10, memo ?? '');
       onUpdate();
       toast.success('10개 사용처리 완료! 🎉');
     } catch (error) {
@@ -102,6 +102,10 @@ const StampSection = ({
               open({
                 content: (
                   <StampConfirmModal
+                    target={{
+                      name: target.name,
+                      phone: target.phone,
+                    }}
                     mode="add"
                     amount={amount}
                     onCancel={close}
@@ -124,6 +128,10 @@ const StampSection = ({
               open({
                 content: (
                   <StampConfirmModal
+                    target={{
+                      name: target.name,
+                      phone: target.phone,
+                    }}
                     mode="remove"
                     amount={amount}
                     onCancel={close}
@@ -150,6 +158,10 @@ const StampSection = ({
               open({
                 content: (
                   <StampConfirmModal
+                    target={{
+                      name: target.name,
+                      phone: target.phone,
+                    }}
                     mode="use10"
                     onCancel={close}
                     onConfirm={async (modalNote?: string) => {
