@@ -43,6 +43,7 @@ export default function CustomerDetailPage() {
       toast.success('고객 정보가 수정되었습니다.');
       close();
       handleUpdate();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.message === 'DUPLICATE_CUSTOMER') {
         toast.error('이미 존재하는 전화번호입니다.');
