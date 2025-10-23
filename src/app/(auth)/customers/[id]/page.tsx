@@ -78,7 +78,11 @@ export default function CustomerDetailPage() {
         </div>
         <StampSection
           stampCount={stampCount}
-          customerId={customerId}
+          target={{
+            id: customerId,
+            name: customer.name,
+            phone: customer.phone,
+          }}
           onUpdate={handleUpdate}
         />
       </div>
