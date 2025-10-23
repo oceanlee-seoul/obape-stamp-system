@@ -42,9 +42,7 @@ export default function CustomersPage() {
                         err instanceof Error &&
                         err.message === 'DUPLICATE_CUSTOMER'
                       ) {
-                        toast.error(
-                          '이미 존재하는 고객입니다. (이름/전화번호 중복)'
-                        );
+                        toast.error('이미 존재하는 전화번호입니다.');
                       } else {
                         toast.error(
                           err instanceof Error

@@ -1,7 +1,6 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Resolver, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useState } from 'react';
 
@@ -13,20 +12,45 @@ type FormValues = {
 };
 
 const schema = z.object({
-  name: z.string().trim().min(1, { message: '이름을 입력하세요.' }),
-  phone: z
+  name: z.coerce.string().trim().min(1, { message: '이름을 입력하세요.' }),
+  phone: z.coerce
     .string()
     .trim()
     .min(1, { message: '전화번호를 입력하세요.' })
-    .regex(/^[0-9\-+()\s]{7,20}$/i, {
-      message: '유효한 전화번호를 입력하세요.',
-    }),
+    .regex(/^[0-9]{10,11}$/, { message: '10-11자리 숫자만 입력하세요.' }),
   gender: z.enum(['male', 'female']),
-  note: z
+  note: z.coerce
     .string()
+    .trim()
     .max(500, { message: '메모는 500자 이하로 입력하세요.' })
     .optional(),
 });
+
+// 안전한 resolver 생성자 (커스텀)
+const safeResolver = (schema: z.ZodTypeAny) => async (data: unknown) => {
+  try {
+    const parsed = await schema.safeParseAsync(data);
+    if (parsed.success) return { values: parsed.data, errors: {} };
+
+    // Zod 에러를 react-hook-form 형식으로 변환
+    const formattedErrors = parsed.error.format();
+    const errors: Record<string, { type: string; message: string }> = {};
+
+    Object.keys(formattedErrors).forEach((key) => {
+      if (key !== '_errors' && formattedErrors[key]?._errors?.length > 0) {
+        errors[key] = {
+          type: 'validation',
+          message: formattedErrors[key]._errors[0],
+        };
+      }
+    });
+
+    return { values: {}, errors };
+  } catch (err) {
+    console.error('[safeResolver Error]', err);
+    return { values: {}, errors: {} };
+  }
+};
 
 export default function CustomerCreateModal({
   onSubmit,
@@ -44,11 +68,15 @@ export default function CustomerCreateModal({
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormValues>({
     mode: 'onChange',
-    resolver: zodResolver(schema),
-    defaultValues: { gender: 'male' },
+    resolver: safeResolver(schema) as Resolver<FormValues, unknown>,
+    defaultValues: { name: '', phone: '', gender: 'male', note: '' },
   });
 
   const handleFormSubmit = (values: FormValues) => {
+    // Check if form is valid before proceeding
+    if (!isValid) {
+      return;
+    }
     setFormData(values);
     setShowConfirm(true);
   };
@@ -111,7 +139,7 @@ export default function CustomerCreateModal({
           </button>
           <button
             type="button"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isValid}
             onClick={handleConfirm}
             className="px-6 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:bg-brand-300 disabled:opacity-50 transition-colors"
           >
@@ -137,7 +165,7 @@ export default function CustomerCreateModal({
           </label>
           <input
             className="w-full rounded border border-brand-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300"
-            placeholder="홍길동(숫자)"
+            placeholder="홍길동"
             aria-invalid={!!errors.name || undefined}
             {...register('name')}
           />
@@ -151,6 +179,7 @@ export default function CustomerCreateModal({
             전화번호 <span className="text-rose-600">*</span>
           </label>
           <input
+            type="number"
             className="w-full rounded border border-brand-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300"
             placeholder="'-' 없이 숫자만 (ex: 01012345678)"
             aria-invalid={!!errors.phone || undefined}
@@ -206,7 +235,7 @@ export default function CustomerCreateModal({
         </button>
         <button
           type="submit"
-          disabled={isSubmitting || !isValid}
+          disabled={isSubmitting}
           className="px-6 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:bg-brand-300 disabled:opacity-50 transition-colors"
         >
           {isSubmitting ? '등록 중...' : '등록'}

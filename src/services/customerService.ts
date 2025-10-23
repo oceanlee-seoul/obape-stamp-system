@@ -76,11 +76,10 @@ export const createCustomer = async (customer: {
   gender: 'male' | 'female';
   note?: string;
 }) => {
-  // duplicate check
+  // duplicate check by phone only
   const { data: existing, error: existingError } = await supabase
     .from('customers')
     .select('id')
-    .eq('name', customer.name)
     .eq('phone', customer.phone)
     .maybeSingle();
 
